@@ -1,0 +1,108 @@
+% Appendix B
+
+\chapter{Instalación de Entornos de desarrollo} % Main appendix title
+
+\label{AppendixB} % For referencing this appendix elsewhere, use \ref{AppendixA}
+
+\lhead{\textit{Kinetis Design Studio}}  % This is for the header on each page - perhaps a shortened title
+
+\section{\textit{Kinetis Design Studio}} % This is for the header on each page - perhaps a shortened title
+
+Software necesario:\footnote{Para la descarga de 2 y 3 se necesita registro en la página.}
+
+\begin{enumerate}
+\item Sistema Operativo GNU/Linux 64 bits.
+\item Kinetis Design Studio 2.0.0. \href{url}{http://www.nxp.com/products/software-and-tools/run-time-software/kinetis-software-and-tools/ides-for-kinetis-mcus/kinetis-design-studio-integrated-development-environment-ide:KDS\_IDE}
+\footnote{En el archivo descargado debe cambiarse la extensión por ``.deb" }
+\item MQX 4.1.1. \href{url}{https://community.freescale.com/community/mqx}
+\footnote{En el archivo descargado debe cambiarse la extensión por ``.tar.gz"}
+\end{enumerate}
+
+Instalación:\footnote{Los nombres de los archivos pueden variar.}
+\begin{enumerate}
+\item Instalar \textit{KDS.deb}: \\
+\verb|sudo dpkg -i KDS.deb|
+\item Descomprimir MQX4.1.1.tar.gz:
+\verb|tar -xzvf MQX4.1.1.tar.gz|
+\item Compilar liberías de MQX:
+	\begin{enumerate}
+	\item Abrir KDS e importar el siguiente proyecto ~/MQX/build/frdmk64f/kds/build\_libs.wsd:
+	\item Compilar todos los proyectos (\textit{build all}):	
+		\begin{itemize}
+		\item BSP
+		\item PSP
+		\item RTCS
+		\item USB
+		\item Shell
+		\end{itemize}
+	Se generarán las librerías necesarias para utilizar el Sistema Operativo	MQX.
+	\item Importar un proyecto de ejemplo.	
+	\end{enumerate}
+\end{enumerate}
+Para generar un nuevo proyecto, se debe copiar un ejemplo incluído en el SO y modificar los \textit{PATHs} de las librerías ya compiladas para que apunten correctamente. Esto se debe a que la dirección guardada en el IDE está dirigida de forma relativa del proyecto original. 
+
+
+
+\newpage
+\lhead{Apéndice B2. \textit{Rails}}  % This is for the header on each page - perhaps a shortened title
+
+\section{\textit{Rails}} % This is for the header on each page - perhaps a shortened title
+
+Software necesario:
+\begin{enumerate}
+\item Sistema Operativo GNU/Linux 64 bits.
+\item Rails.
+\end{enumerate}
+Nota:
+\begin{quotation}
+Para instalar el \textit{framework Rails} y Ruby , no es recomendable utilizar los paquetes del gestor de descargas del sistema operativo por cuestiones de compatibilidad.\\
+\end{quotation}
+
+Pasos para la instalación(siempre desde la consola):
+
+\begin{enumerate}
+\item Actualizar sistema:\\ 
+\verb|sudo apt-get update|
+\item Instalar Curl:\\ 
+\verb|sudo apt-get install curl|
+
+\item Instalar Ruby usando \textit{RVM}
+	\begin{enumerate}
+	\item Instalar RVM:\\
+	\verb|\curl -L https://get.rvm.io | bash -s stable --ruby |
+	\item Instalar Ruby:
+		\begin{enumerate}
+		\item \verb|rvm get stable --autolibs=enable |
+		\item \verb|rvm install ruby |
+		\item \verb|rvm --default use ruby-2.3.0 |
+		\end{enumerate}
+	\end{enumerate}
+
+\item Chequear el \textit{Gem Manager}:\\
+\verb|gem -v|
+\item Actualizar Gemas:\\
+\verb|gem update --system|
+\item Instalar gema Bundler:\\
+\verb|gem install bundler|
+\item Crear \textit{workspace}:\\
+\verb|mkdir workspace|
+\end{enumerate}
+\newpage
+
+
+\lhead{Apéndice B3. \emph{Android Studio}} % This is for the header on each page - perhaps a shortened title
+\section{\textit{Android Studio}} % This is for the header on each page - perhaps a shortened title
+Software necesario:
+\begin{itemize}
+\item Sistema Operativo GNU/Linux 64 bits.
+\item Java \textit{JDK}.
+\item \textit{Android Studio}. \href{url}{http://developer.android.com/intl/es/sdk/index.html\#top}
+\end{itemize}
+
+Pasos para la instalación:
+\begin{enumerate}
+\item Descargar e instalar el \textit{Java Development Kit(JDK)}, puede ser la versión libre OpenJDK(desde consola):
+\verb|sudo apt-get intall openjdk-7-jdk|
+\item Descargar e intalar \textit{Android Studio} desde el \textit{link} anterior.
+\end{enumerate}
+

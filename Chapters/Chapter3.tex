@@ -1,0 +1,18 @@
+% Chapter Template
+
+\chapter{Desarrollo} % Main chapter title
+
+En el presente capítulo se describe el proceso de desarrollo del sistema que se compone en 3 partes, las cuales se detallan en cada caso el procedimiento de diseño e implementación utilizando como referencia el Documento de Especificación de Requerimientos de Sistema de \textit{Software} propuesto por la \textit{IEEE}.\\
+
+\label{Chapter3} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
+
+\lhead{Capítulo 3. \emph{Desarrollo}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
+
+%----------------------------------------------------------------------------------------
+%	SECTION 1
+%----------------------------------------------------------------------------------------
+\section{Análisis del problema}
+El problema consiste en comunicar a través de Internet, notificaciones de alertas producidas por un dispositivo que contiene sensores, hacia un servidor remoto el cual recibe y almacena dichas notificaciones y, eventualmente puede tomar decisiones acerca de las mismas a través de un operador que monitoriza el sistema. \\
+Por otro lado, el control del dispositivo se debe realizar a través de un teléfono móvil inteligente(\textit{smartphone}) a través de la red LAN del hogar. Éste, a su vez, puede ser conectado con otros aparatos eléctricos para comandarlos en caso de ser necesario.\\
+Por lo tanto, se decidió dividir el problema en 3 partes, las cuales fueron diseñadas para poder ser desarrolladas concurrentemente. Éstas son: Un subsistema encargado de la monitorización de los sensores(alarma), otro que recibe las notificaciones y emite alertas(Servidor) y por último, el encargado de comunicar al usuario con la alarma (aplicación).
+\newpage
