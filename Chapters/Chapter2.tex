@@ -79,7 +79,7 @@ Todos los tipos de automatización de portones así como los sistemas de apertur
 \end{figure}
 
 \section{Controladores}
-Todos estos cerramientos eléctricos no funcionan por si mismos sino que requieren de un dispositivo controlador.
+Todos los cerramientos eléctricos mencionados anteriormente no funcionan por si mismos sino que requieren de un dispositivo controlador.
 Algunos ejemplos se muestran en la figura ~\ref{fig:controladoresacceso}.\\
 \begin{figure}[htbp]
 	\centering
@@ -88,9 +88,9 @@ Algunos ejemplos se muestran en la figura ~\ref{fig:controladoresacceso}.\\
 	\caption[Controladores de Acceso]{Algunos ejemplos de controladores de cerramientos eléctricos.}
 	\label{fig:controladoresacceso}
 \end{figure}
-Estos controladores son circuitos electrónicos que se encargan de generar las señales de activación y/o control de los cerramientos eléctricos. El usuario podrá actuar sobre el cerramiento eléctrico a través de diversos modos de accionamiento se mencionan los más habituales:
+Estos controladores son circuitos electrónicos que se encargan de generar las señales de activación y/o control de los cerramientos eléctricos. El usuario podrá actuar sobre el cerramiento eléctrico a través de diversos modos de accionamiento, se mencionan los más habituales:
 \begin{itemize}
-	\item portero telefónico
+	\item Portero telefónico
 	\item Contraseña por teclado
 	\item Lector biométrico
 	\item Llave electrónica
@@ -145,7 +145,7 @@ Una basta mayoría de proveedoras de servicio de monitoreo de alarmas ahora ofre
 
 \subsection{Llaves Electrónicas y Control Remoto}
 Actualmente la mayoría de los controladores de acceso soportan algún tipo de llave electrónica.
-Una llave electrónica es un dispositivo electrónico que le permite al usuario operar el cerramiento eléctrico. Existen diversos tipos de llaves electrónicas pero sólo se mencionan las más utilizadas.
+Una llave electrónica es un dispositivo electrónico que le permite al usuario operar el cerramiento eléctrico. Existen diversos tipos de llaves electrónicas a continuación se mencionan las más utilizadas.
 \begin{itemize}
 	\item Llaves RFID
 	\item Control Remoto RF
@@ -153,7 +153,7 @@ Una llave electrónica es un dispositivo electrónico que le permite al usuario 
 
 \subsubsection{Llaves RFID}
 RFID (Radio-frequency identification) es un sistema de almacenamiento y recuperación de datos a distancias cortas por emisión de radiofrecuencia de baja potencia. 
-Una etiqueta RFID consiste en un pequeño circuito receptor y transmisor de radio. Cuando se activa por un pulso de interrogación electromagnético de un dispositivo lector de RFID cercano, la etiqueta transmite datos digitales, generalmente un número identificatorio de vuelta al lector.
+Una etiqueta RFID consiste en un pequeño circuito receptor y transmisor de radio. Cuando es activada por un pulso de interrogación electromagnético emitido por un dispositivo lector RFID cercano, la etiqueta transmite datos digitales de vuelta al lector, generalmente un número identificador.
 Estas etiquetas o circuitos RFID son tan diminutos que pueden incluirse en objetos de tamaño reducido como llaveros y tarjetas, algunos ejemplos se muestran en la figura ~\ref{fig:llavesrfid}.
 El usuario del sistema de acceso aproximará esta llave al lector RFID incluido en el controlador y se producirá el intercambio del número identificatorio. En caso de que ese dato esté registrado en el controlador el usuario podrá controlar el cerramiento eléctrico.
 
@@ -166,8 +166,8 @@ El usuario del sistema de acceso aproximará esta llave al lector RFID incluido 
 \end{figure}
 
 \subsubsection{Control Remoto RF}
-RF es el acrónimo de Radio-Frequency y hace referencia a las tecnologías que emplean sistemas de comunicación por emisión de ondas electromagnéticas. Por lo general se utilizan anchos de bandas libres sin restricciones gubernamentales con potencias de transmisión baja.
-En el caso del control remoto por RF un código numérico identificatorio se transmite al controlador que incluye un circuito receptor comúnmente en las frecuencias que van de los 200 MHz a los 500 Mhz. El rango de acción de estos dispositivos es de aproximadamente 100 mts en línea de visión.
+RF es el acrónimo de Radio-Frequency y hace referencia a las tecnologías que emplean sistemas de comunicación por emisión de ondas electromagnéticas. Por lo general se utilizan anchos de bandas libres sin restricciones gubernamentales con baja potencia de transmisión.
+En el caso del control remoto para por RF un código numérico identificatorio se transmite al controlador que incluye un circuito receptor comúnmente en las frecuencias que van de los 200 MHz a los 500 Mhz. El rango de acción de estos dispositivos es de aproximadamente 100 mts en línea de visión.
 El controlador de acceso permite la actualización del código identificatorio en caso de que ya esté empleado al momento de la configuración. En algunas implementaciones este código es rotatorio y cambia con el uso.
 En la figura ~\ref{fig:controlesrf} se muestran algunos ejemplos.
 
@@ -180,12 +180,12 @@ En la figura ~\ref{fig:controlesrf} se muestran algunos ejemplos.
 \end{figure}
 
 \subsubsection{Un problema de seguridad}
-Tanto el empleo de llaves RFID como controles RF presentan un problema de seguridad en estos sistemas de acceso electrónico. Conceden acceso a quien porta el token de identificación sin importar si se trata del dueño real.
+Tanto el empleo de llaves RFID como controles RF presentan un problema de seguridad para estos sistemas de acceso electrónico ya que conceden acceso a quien porta llave sin importar si se trata del dueño real.
 En ningún caso se utilizan protocolos para la identificación del solicitante. Así mismo tampoco se emplean algoritmos de  encripción de datos por lo que el código de identificación se transmite en texto plano, por lo menos este es el caso para la mayoría de las implementaciones.\\
 Por esta razón existen métodos de hacking ya documentados que involucran dos técnicas principales.\\
 \textbf{Clonado por lectura RFID:} En este caso simplemente basta con tener un lector RF y acceso a la etiqueta RFID empleada por la llave a ser clonada. Una vez leído el código se crea una etiqueta con el mismo código y se obtiene acceso.\\
 \textbf{Clonado por intercepción RF:}  Ésta técnica implica un ataque por sniffing del código de identificación. Teniendo en cuenta que la frecuencia y el tipo de modulación empleado por los sistemas actuales son conocidos, resulta en una tarea sencilla empleando un transeptor RF y un decodificador por software.\\
-\textbf{Inhibición de Señal:} Esta técnica implica la utilización de un transmisor que contamina con ruido el ancho de banda de operación del control remoto impidiendo la correcta comunicación con el controlador del cerramiento.
+\textbf{Inhibición de Señal:} Esta técnica es quizás la mas sencilla de todas. Se utiliza para vulnerar los sistemas de acceso que emplean controles remotos RF. Implica la utilización de un transmisor que contamina con ruido el ancho de banda de operación del control remoto. De esta forma se impide la correcta comunicación con el controlador del cerramiento al momento de enviar la señal de cierre, evitando así que la abertura pueda ser cerrada.
 
 \section{Cerramientos Electrónicos IoT}
 IoT (Internet of Things) describe la red de objetos físicos que incorporan circuitos con microcontroladores, software embebido, sensores y componentes de comunicación con el propósito de intercambiar datos con otros objetos conectados y servicios en linea a través de internet.
@@ -199,7 +199,16 @@ Con el ánimo de ilustrar el panorama de productos IoT orientados a la seguridad
 \end{itemize}
 
 \subsection{Smart Alarms}
-Estos productos proponen la instalación y configuración de una red de sensores (comúnmente inalámbricos) en una topología tipo estrella. En el centro de la red se encuentra un dispositivo electrónico denominado \textit{gateway} que posee al menos dos interfaces de comunicación principales, una para conectarse a la red de sensores y otra para acceder a internet. Esta ''central'' o gateway recibe las actualizaciones de estado de los sensores y las reenvía por internet al servicio de monitoreo.
+Estos productos proponen la instalación y configuración de una red de sensores (comúnmente inalámbricos) en el interior y alrededor del hogar o cualquier edificio en general. Algunos ejemplos de estos sensores se listan a continuación:
+\begin{itemize}
+	\item Sensores de Humo
+	\item Sensores de gases peligrosos (CO2, CO, propano, butano, metano).
+	\item Sensores de presencia IR.
+	\item Sensores de apertura para puertas y ventanas.
+\end{itemize} 
+Estos sensores son sistemas embebidos de tamaño reducido con poca capacidad de cómputo y de muy bajo consumo eléctrico incluso en algunas versiones alimentados a baterías.
+Por esta razón se emplean protocolos de comunicación acorde a las capacidades de estos dispositivos tales como \textit{zigbee} y \textit{Thread} ambos basados en la especificación IEEE 802.15.4 por lo que sus respectivos stacks de software presentan footprints de memoria adecuados para la aplicación en particular.\\
+Como parte fundamental de la red se incluye un dispositivo electrónico denominado \textit{concentrador, gateway ó central} que posee al menos dos interfaces de comunicación principales, una para conectarse a la red de sensores y otra para acceder a internet. Este ''gateway'' recibe las actualizaciones de estado de los sensores y las reenvía por internet a un servicio de monitoreo mantenido por el mismo proveedor.\\
 El usuario puede acceder a los datos almacenados por el servicio a través de un cliente web o aplicación móvil.
 Adicionalmente estos clientes ofrecen una GUI para la configuración tanto de la central como para los sensores.
 En la figura ~\ref{fig:smartalarms} se muestran ejemplos de los productos ofrecidos por los fabricantes más populares.
@@ -214,8 +223,8 @@ En la figura ~\ref{fig:smartalarms} se muestran ejemplos de los productos ofreci
 
 \subsection{Smart Door Locks}
 Esta categoría de productos comprenden dispositivos electromecánicos que reemplazan o se adaptan a las tradicionales cerraduras de tambor radial comúnmente utilizadas en puertas residenciales estadounidenses.
-Estos dispositivos incluyen el sistema embebido capaz de conectarse a internet a través de WiFi o Bluetooth (mediante el uso de un gateway).
-En todos los casos se ofrece una aplicación móvil que hace de llave virtual y permite el acceso a estos cerramientos inteligentes.
+Estos dispositivos incluyen el sistema embebido capaz de conectarse a internet a través de WiFi o Bluetooth (mediante el uso de un gateway WiFi como en el caso de SESAME).
+Para todos los casos se ofrece una aplicación móvil que hace de llave virtual y permite el acceso a estos cerramientos inteligentes.
 Adicionalmente el usuario administrador podrá agregar y remover usuarios autorizados a operar el dispositivo.
 En la figura ~\ref{fig:smartlocks} se pueden observar ejemplos reales de productos disponibles en el mercado.
 
@@ -228,9 +237,9 @@ En la figura ~\ref{fig:smartlocks} se pueden observar ejemplos reales de product
 \end{figure}
 
 \subsection{Smart Garage Door}
-Para el caso de los portones de garaje existen diversas implementaciones que agregan estos objetos a la familia de productos IoT.\\
-Debido a que la mayoría de los controladores ofrecen al menos una interfaz para conexión de botón externo para apertura y cierre. Diversas sturtups desarrollaron implementaciones de dispositivos a modo de accesorios compatibles con una familia de controladores. Este es el caso de ISmartGate, Nexx NXG-100 y Garadget.\\
-Luego los fabricantes más importantes de controladores y motores para portones de garaje de estados unidos realizaron sus propias implementaciones y las incorporaron a sus controladores como una funcionalidad built-in. Este es el caso de la empresa Genie con su linea de productos Aladdin. Por otro lado la empresa Chamberlane optó por el enfoque de agregar la misma funcionalidad mediante el uso accesorios que ofrecen con su línea myQ.\\
+Para el caso de los portones automatizados de garaje existen diversas implementaciones que agregan estos objetos a la familia de productos IoT.\\
+La mayoría de los controladores ofrecen al menos una interfaz para conexión de un botón externo de apertura y cierre. Por esta razón diversas sturtups desarrollaron implementaciones de dispositivos a modo de accesorios compatibles con una familia de controladores. Este es el caso de ISmartGate, Nexx NXG-100 y Garadget.\\
+Luego los fabricantes más importantes de controladores y motores para portones de garaje de estados unidos realizaron sus propias implementaciones y las incorporaron a sus controladores como una funcionalidad built-in. Este es el caso de la empresa Genie con su linea de productos Aladdin. Por otro lado la empresa Chamberlane optó por el enfoque de agregar la misma funcionalidad mediante el uso de accesorios que ofrecen con su línea myQ.\\
 Mas recientemente, en el transcurso del año 2019 PPA, la empresa más grande de Sudamérica especializada en automatización de aberturas residenciales e industriales. Presentó un gateway IoT (SPIRIT) compatible con una amplia familia de sensores y actuadores que también fabrican. Entre ellos un módulo que permite el accionamiento y monitoreo remoto de portones automatizados.
 Todas las implementaciones ofrecen una aplicación móvil que se usará para el monitoreo, control y configuración del producto.
 En la figura ~\ref{fig:smartgates} se muestran ejemplos de estos productos.
@@ -245,4 +254,4 @@ En la figura ~\ref{fig:smartgates} se muestran ejemplos de estos productos.
 
 \section{Conclusión}
 Los cerramientos eléctricos presentan una interesante gama de dispositivos para los que pueden plantearse la extensión de funcionalidad con el objetivo de convertirlos en productos IoT. Algunas de las funcionalidades que se entienden deseables para este tipo de dispositivos son el monitoreo remoto, el control a distancia y la configuración remota.\\
-Adicionalmente aparece una oportunidad de mejora al plantear los problemas de seguridad que tienen las implementaciones  actuales y que podrían ser mitigados al utilizar protocolos de comunicación modernos.
+Adicionalmente aparece una oportunidad de mejora al plantear los problemas de seguridad que tienen las implementaciones actuales y que podrían ser mitigados al utilizar protocolos de comunicación modernos.
