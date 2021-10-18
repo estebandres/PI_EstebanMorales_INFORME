@@ -1,20 +1,20 @@
 % Chapter Template
 
-\chapter{Conclusiones} % Main chapter title
+\chapter{Iteración I:  Configuración y Acción Local} % Main chapter title
 
-\label{Chapter4} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
+\label{Chapter6} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
 
-\lhead{Capítulo 4. \emph{Conclusiones}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
+\lhead{Capítulo 6. \emph{Iteración I: Configuración y Acción Local}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
 
 %----------------------------------------------------------------------------------------
 %	SECTION 1
 %----------------------------------------------------------------------------------------
-Durante el desarrollo de la presente práctica se entendieron las ventajas de implementar un sistema de software utilizando un patrón de arquitectura. La inspección de código escrito por profesionales del área introdujo conceptos de programación Java avanzados tales como el uso de clases anónimas \cite{anon_pankaj} y la implementación de clases y métodos genéricos\cite{gen_caules}. Se pudieron observar las técnicas empleadas para realizar las pruebas sobre el código implementado y fue necesario invertir tiempo en la investigación de las librerías y framework para pruebas (UnitTest, Integration Tests) tales como Mockito \cite{mockito_lars} (creación de objetos mock(maquetas), stubs(comportamiento forzado) y spies (espías))y Espress \cite{espress_maksim} (Simulación e interacción con objetos del framework android).\\
-Luego de estudiar las implementaciones se fueron evidenciando los beneficios de aplicar una arquitectura de estas características. La modularización en componentes con responsabilidades reducidas y bien definidas permite seguir el flujo de ejecución del código con facilidad y como consecuencia directa el rastreo de bugs reduce el radio de ubicación del código involucrado a unas pocas líneas en muy poco tiempo.
-Dado que la lógica de negocios está encapsulada en la capa de dominio, su ejecución es completamente independiente de los componentes del framework ofreciendo la posibilidad de exportar/traducir la lógica a otros lenguajes, frameworks y sistemas operativos.
-Tanto los presentadores como las vistas tienen contratos que deberían respetarse en cualquier plataforma por lo que el planteo inicial de la capa de presentación permite el desarrollo en paralelo de implementaciones nativas.
-El uso de una abstracción de repositorios en la capa de datos permite la inclusión de diversos orígenes de datos o canales que ofrecen mayor flexibilidad al momento de establecer los niveles de redundancia soportados y los esquemas de actualización disponibles. 
-En una buena implementación, la organización del código en directorios y paquetes debería facilitar la identificación de los componentes de arquitectura y la discriminación de funcionalidades.   
-De manera indirecta se observó que la implementación introduce un procedimiento de trabajo repetitivo tanto para la adición de nuevas funcionalidades como para la remoción de errores y la inspección del código en general.\\
-Como una desventaja notoria se menciona la empinada curva de aprendizaje para la inclusión de nuevos miembros en un hipotético equipo de desarrollo. Así mismo se hizo evidente que todos los conceptos de abstracción que fueron introducidos se traducen en un aumento notable en la cantidad de lineas de código meramente dedicadas a mantener la estructura del diseño pero que no proveen una funcionalidad concreta al sistema.\\
-Finalmente, se observaron inconsistencias entre el planteo teórico de la arquitectura y la implementación real del software mayormente por la dificultad técnica y concesiones que se tuvieron en cuenta para disminuir la verbosidad de algunos componentes o interacciones (e.g. la violación de la regla de dependencias en los casos de uso).
+\section{Introducción}
+\section{Objetivos}
+\section{Requerimientos}
+\section{Análisis y Plan de Acción}
+\section{Casos de Uso}
+\section{Implementación}
+\section{Pruebas Unitarias}
+\section{Pruebas de Sistema}
+\section{Conclusión}
