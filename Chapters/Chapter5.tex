@@ -1,21 +1,56 @@
 % Chapter Template
 
-\chapter{Arquitectura de la Aplicación} % Main chapter title
+\chapter{Diseño} % Main chapter title
 
 \label{Chapter5} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
 
-\lhead{Capítulo  4. \emph{Arquitectura de la Aplicación}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
-\section{Inversión de Control (IoC)}
-\subsection{Inyección de Dependencias}
-\subsection{Dagger}
-\section{Implementación de Capas}
-\subsection{Capa de Datos}
-\subsection{Capa de Dominio}
-\subsection{Capa de Presentación}
-\section{Estructura del Proyecto}
-\subsection{Inicio}
-\subsection{Módulos}
-\subsection{Configuraciones}
-\subsection{Usuarios}
+\lhead{Capítulo  4. \emph{Diseño}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
+Este capitulo se dedica a explorar los aspectos más relevantes relacionados con el diseño de la solución.
+En primera instancia se plantea la necesidad de elegir y emplear un patrón de arquitectura de software 
+para llevar a cabo la implementación de la aplicación. Brevemente se introducen los beneficios que motivaron la decisión de 
+encuadrar las tareas de codificación bajo los lineamientos de la arquitectura seleccionada.
 
+Se mencionan cada uno de los principios de diseño propuestos por la arquitectura y las repercusiones que deberían tener tanto en la estructura de la implementación como en su proceso.
+Como parte de la descripción técnica se listan las partes constituyentes propuestas, se detallan las características más relevantes, sus responsabilidades y la relación entre ellas.
+
+Quizás la propiedad más significativa de un diseño como el sugerido es la comunicación entre sus componentes.
+Para el presente proyecto se propuso utilizar el paradigma de programación reactiva lo que representa una re-formulación
+transversal del modo de codificación y resolución de los algoritmos en general. 
+Teniendo en cuenta el impacto de esta decisión de diseño se hace necesario incluir una reseña de sus características principales.
+
+Dado que el producto final incluye un modulo electrónico y un servicio online es imperativo definir con anticipación una interfaz de comunicación entre los subsistemas.
+
+Así mismo, debido a la naturaleza de los requerimientos definidos en el capítulo ~\ref{Chapter4} deben incluirse como parte del diseño diversos protocolos de comunicación, se mencionan las características principales y se justifica su empleo en el funcionamiento del producto.
+
+\section{Arquitectura de Software}
+
+Para realizar la implementación de la aplicación cliente se eligió la plataforma de desarrollo para dispositivos android, más precisamente teléfonos inteligentes y tabletas.
+
+El objetivo principal de emplear una estructura fija para la implementación del proyecto es utilizar un único "lenguaje arquitectónico" que resulte familiar a los integrantes de un posible equipo de desarrollo así como transversal tanto para la implementación android, iOS o cualquier otra plataforma que pueda aparecer durante la vida útil del producto. De esta manera no es necesario pagar un costo demasiado alto al incluir una implementación del mismo sistema para una plataforma distinta. 
+Los equipos de cada una de estas implementaciones podrán discutir aspectos de diseño, validar reglas de negocio y evacuar dudas sin tener en cuenta los detalles de las plataformas, así mismo será más fácil conservar coherencia y mostrar armonía entre las implementaciones nativas para dichas plataformas.
+
+\subsection{Clean Architecture}
+También conocida como arquitectura de capas (onion architecture). El punto principal de este enfoque es que la lógica de negocio, también conocido como dominio, está en el centro del universo (Al medio entre las entradas del sistema y las salidas)\cite{clean_bob}.
+\subsubsection{Dominio Transparente}
+\subsubsection{Regla de Dependencias}
+\subsubsection{Principio de Abstracción}
+\subsubsection{Comunicación entre capas}
+
+\section{Diseño de Capas}
+\subsection{Capa de Presentación: MVP}
+\subsection{Capa de Dominio: Patrón Command}
+\subsection{Capa de Datos: Patrón Repository}
+
+\section{Programación Reactiva}
+\subsection{Aplicación sobre la Arquitectura}
+
+\section{Interfaces}
+\subsection{Modulo - Aplicación}
+\subsubsection{RPC}
+\subsubsection{Definición de la API}
+
+\section{Protocolos de Comunicación}
+\subsection{MDNS}
+\subsection{HTTP}
+\subsection{MQTT}
 
