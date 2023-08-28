@@ -6,6 +6,7 @@
 
 \lhead{Capítulo  4. \emph{Diseño}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
 Este capitulo se dedica a explorar los aspectos más relevantes relacionados con el diseño de la solución.
+
 En primera instancia se plantea la necesidad de elegir y emplear un patrón de arquitectura de software 
 para llevar a cabo la implementación de la aplicación. Brevemente se introducen los beneficios que motivaron la decisión de 
 encuadrar las tareas de codificación bajo los lineamientos de la arquitectura seleccionada.
@@ -13,14 +14,14 @@ encuadrar las tareas de codificación bajo los lineamientos de la arquitectura s
 Se mencionan cada uno de los principios de diseño propuestos por la arquitectura y las repercusiones que deberían tener tanto en la estructura de la implementación como en su proceso.
 Como parte de la descripción técnica se listan las partes constituyentes propuestas, se detallan las características más relevantes, sus responsabilidades y la relación entre ellas.
 
-Quizás la propiedad más significativa de un diseño como el sugerido es la comunicación entre sus componentes.
-Para el presente proyecto se propuso utilizar el paradigma de programación reactiva lo que representa una re-formulación
+Quizás la propiedad más crítica de un diseño como el sugerido es la comunicación entre sus componentes.
+Para su puesta en práctica se propuso utilizar el paradigma de programación reactiva. Se conoce a priori que esta nueva forma de pensar el software lleva adjunta una pronunciada curva de aprendizaje que implica una re-formulación
 transversal del modo de codificación y resolución de los algoritmos en general. 
 Teniendo en cuenta el impacto de esta decisión de diseño se hace necesario incluir una reseña de sus características principales.
 
 Dado que el producto final incluye un modulo electrónico y un servicio online es imperativo definir con anticipación una interfaz de comunicación entre los subsistemas.
 
-Así mismo, debido a la naturaleza de los requerimientos definidos en el capítulo ~\ref{Chapter4} deben incluirse como parte del diseño diversos protocolos de comunicación, se mencionan las características principales y se justifica su empleo en el funcionamiento del producto.
+Así mismo, debido a la naturaleza de los requerimientos definidos en el capítulo ~\ref{Chapter4} deben incluirse como parte del diseño diversos protocolos de comunicación, se mencionan sus características principales y se justifica su empleo en el funcionamiento del producto.
 
 \section{Arquitectura de Software}
 
@@ -30,11 +31,50 @@ El objetivo principal de emplear una estructura fija para la implementación del
 Los equipos de cada una de estas implementaciones podrán discutir aspectos de diseño, validar reglas de negocio y evacuar dudas sin tener en cuenta los detalles de las plataformas, así mismo será más fácil conservar coherencia y mostrar armonía entre las implementaciones nativas para dichas plataformas.
 
 \subsection{Clean Architecture}
-También conocida como arquitectura de capas (onion architecture). El punto principal de este enfoque es que la lógica de negocio, también conocido como dominio, está en el centro del universo (Al medio entre las entradas del sistema y las salidas)\cite{clean_bob}.
+También conocida como arquitectura de capas (Onion Architecture). Su característica distintiva es que coloca la lógica de negocio, también conocido como dominio, al centro del diseño, es decir justo al medio entre las entradas y las salidas del sistema\cite{clean_bob}.\\
+Si debiera resumirse en una frase: \textit{Las capas internas contienen lógica de negocios, las capas externas detalles de implementación}.
+
 \subsubsection{Dominio Transparente}
+Al listarse los directorios de un proyecto que cumple con los lineamiento de esta arquitectura, con tan solo leer el nombre de las carpetas debería ser posible, casi de inmediato, tener una idea de qué se trata esta aplicación, independientemente de la tecnología. Todo lo demás es un \emph{detalle de implementación}\cite{clean_five}.
+
+Esta arquitectura propone un conjunto de características que debería seguir el proyecto que la implementa:
+
+\begin{itemize}
+	\item Regla de dependencia
+	\item Abstracción
+	\item Comunicación entre Capas
+\end{itemize}
 \subsubsection{Regla de Dependencias}
+\emph{Las capas externas deben depender de las capas internas}. Permaneciendo en el centro las entidades del dominio inmediatamente seguidas por los objetos que encapsulan la lógica de negocio y que tienen acceso a tal dominio.  En la Figura ~\ref{fig:Diagrama_clasico} se muestran tres flechas en un recuadro rojo que representan el sentido de las dependencias. En lugar de ``depende'', tal vez sea mejor usar términos como ``ve'', ``conoce'' o ``está consciente de...''. En estos términos, las capas externas \emph{ven, conocen y son conscientes} de las capas internas, pero las capas internas \emph{no ven, no conocen, ni son conscientes} de las capas externas. Como se mencionó anteriormente, las capas internas contienen lógica de negocios y las capas externas  los detalles de implementación. Combinado con esta regla de dependencia, se deduce que la lógica de negocio no ve, ni conoce, detalles de implementación.
+
+No existe una única forma de implementar esta regla. Una estrategia consiste en colocar las clases de cada capa en paquetes diferentes, poniendo especial cuidado en no importar paquetes ``externos'' en paquetes ``internos''. Sin embargo, si algún programador del equipo no es consciente del principio de dependencias, nada les impediría romperlo. Un mejor enfoque sería separar las capas en diferentes módulos de construcción independiente, y ajustar las dependencias en el archivo de construcción para que la capa interna simplemente no pueda utilizar la capa externa, sin embargo este enfoque implica un exhaustivo conocimiento de la herramienta de construcción de la plataforma para la que se está desarrollando.
+
+Para el presente proyecto se optó por la primera alternativa.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=1\textwidth]{Figures/-001.png}
+	\rule{35em}{1pt}
+	\caption[Principio de Dependecias]{Esquema de dependencias para una arquitectura en capas.}
+	\label{fig:Diagrama_clasico}
+\end{figure}
+
 \subsubsection{Principio de Abstracción}
-\subsubsection{Comunicación entre capas}
+El principio de abstracción ya se ha insinuado antes. Postula que, a medida que se recorre el diagrama circular de la Figura ~\ref{fig:C2_PA} a lo largo del radio en dirección del centro, las implementaciones se vuelven más abstractas, agnósticas de plataformas y frameworks. Como se mencionó en la sección ~\ref{Clean Architecture} anterior el círculo interno contiene lógica de negocios mientras que el exterior comprende los detalles de implementación.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=1\textwidth]{Figures/-002.png}
+	\rule{35em}{1pt}
+	\caption[Abstraction Principle]{Principio de Abstracción en una arquitectura por capas.}
+	\label{fig:C2_PA}
+\end{figure}
+
+Incluso puede plantearse el mismo componente lógico dividido entre varias capas, como se muestra en el diagrama ~\ref{fig:C2_PA}. La parte más abstracta se puede definir en la capa interna, y la parte más concreta en la capa externa.
+
+De esta manera, la lógica de negocios podría producir como un efecto secundario que se muestren notificaciones del sistema por ejemplo, pero no sabe nada acerca de los detalles de la implementación (cómo se implementan las notificaciones para una plataforma dada), por lo tanto la regla de las dependencias se conserva.
+
+\subsubsection{Comunicación entre Capas}
 
 \section{Diseño de Capas}
 \subsection{Capa de Presentación: MVP}
@@ -50,7 +90,7 @@ También conocida como arquitectura de capas (onion architecture). El punto prin
 \subsubsection{Definición de la API}
 
 \section{Protocolos de Comunicación}
-\subsection{MDNS}
-\subsection{HTTP}
+\subsection{MDNS DNS-SD}
+\subsection{HTTP y Digest Authentication}
 \subsection{MQTT}
 
