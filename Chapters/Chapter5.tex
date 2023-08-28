@@ -60,7 +60,7 @@ Para el presente proyecto se optó por la primera alternativa.
 \end{figure}
 
 \subsubsection{Principio de Abstracción}
-El principio de abstracción ya se ha insinuado antes. Postula que, a medida que se recorre el diagrama circular de la Figura ~\ref{fig:C2_PA} a lo largo del radio en dirección del centro, las implementaciones se vuelven más abstractas, agnósticas de plataformas y frameworks. Como se mencionó en la sección ~\ref{Clean Architecture} anterior el círculo interno contiene lógica de negocios mientras que el exterior comprende los detalles de implementación.
+El principio de abstracción ya se ha insinuado antes. Postula que, a medida que se recorre el diagrama circular de la Figura ~\ref{fig:C2_PA} a lo largo del radio en dirección del centro, las implementaciones se vuelven más abstractas, agnósticas de plataformas y frameworks. Como se mencionó en la sección anterior el círculo interno contiene lógica de negocios mientras que el exterior comprende los detalles de implementación.
 
 \begin{figure}[htbp]
 	\centering
@@ -70,12 +70,32 @@ El principio de abstracción ya se ha insinuado antes. Postula que, a medida que
 	\label{fig:C2_PA}
 \end{figure}
 
-Incluso puede plantearse el mismo componente lógico dividido entre varias capas, como se muestra en el diagrama ~\ref{fig:C2_PA}. La parte más abstracta se puede definir en la capa interna, y la parte más concreta en la capa externa.
-
-De esta manera, la lógica de negocios podría producir como un efecto secundario que se muestren notificaciones del sistema por ejemplo, pero no sabe nada acerca de los detalles de la implementación (cómo se implementan las notificaciones para una plataforma dada), por lo tanto la regla de las dependencias se conserva.
-
 \subsubsection{Comunicación entre Capas}
+Dado que en esta arquitectura la lógica de negocio se encuentra en el centro del diseño esta debe mediar entre los componentes externos de entrada y salida.
+El problema es que por la regla de dependencia esta capa ni siquiera sabe que estos componentes existen.
+Esto representa un desafío ya que necesitamos que los datos sean capaces de fluir desde las capas externas a las internas y viceversa, sin violar la regla de dependencias.
 
+
+Se propone un método para resolver el problema de comunicación entre capas.
+En primera instancia se define los objetos \emph{Caso de Uso} como las entidades principales de la capa Lógica de Negocios.
+Se conceptualizan dos puertos para cada caso de uso, uno de entrada y otro de salida.
+Mediante el puerto de entrada se reciben parámetros para la ejecución del caso de uso mientras que el puerto de salida permite la extracción de sus resultados.
+En la práctica el puerto de entrada es una clase 
+
+ 
+Solo tenemos dos capas, la verde y la roja. La capa verde es exterior y sabe sobre la capa roja, la roja es interior y solo se conoce a sí mismo. Necesitamos que los datos fluyan desde el verde al rojo y viceversa. La solución propuesta se muestra en el diagrama ~\ref{fig:C2_CC_01}:
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=1\textwidth]{Figures/-004.png}
+	\rule{35em}{1pt}
+	\caption[Layer Communication]{Comunicación entre capas.}
+	\label{fig:C2_CC_01}
+\end{figure}
+
+En la parte inferior derecha del diagrama ~\ref{fig:C2_CC_01} muestra el flujo de datos. Los datos van desde el controlador, a través del puerto de entrada del caso de uso (o reemplazar el caso de uso con el componente de su elección), luego a través del propio caso de uso y después a través del puerto de salida del caso de uso al presentador.
+
+El controlador tiene un puerto de entrada, literalmente tiene una referencia a él. Llama a un método en él, de modo que los datos van del controlador al puerto de entrada. Pero el puerto de entrada es una interfaz, y la implementación real es el caso de uso: por lo que ha llamado un método en un caso de uso y los flujos de datos al caso de uso. El caso de uso hace algo y quiere enviar los datos de vuelta. Tiene una referencia al puerto de salida, ya que el puerto de salida está definido en la misma capa, por lo que puede llamar al método en él. Por lo tanto, los datos van al puerto de salida. Y finalmente, el presentador es, o implementa, el puerto de salida.
 \section{Diseño de Capas}
 \subsection{Capa de Presentación: MVP}
 \subsection{Capa de Dominio: Patrón Command}
