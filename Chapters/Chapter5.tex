@@ -32,7 +32,8 @@ Los equipos de cada una de estas implementaciones podrán discutir aspectos de d
 
 \subsection{Clean Architecture}
 También conocida como arquitectura de capas (Onion Architecture). Su característica distintiva es que coloca la lógica de negocio, también conocido como dominio, al centro del diseño, es decir justo al medio entre las entradas y las salidas del sistema\cite{clean_bob}.\\
-Si debiera resumirse en una frase: \textit{Las capas internas contienen lógica de negocios, las capas externas detalles de implementación}.
+
+El \textbf{\emph{Principio Fundamental}}\label{text:Clean_Princ_Fund} de esta arquitectura puede resumirse en una frase: \textit{``Las capas internas contienen lógica de negocios, las capas externas detalles de implementación''}.
 
 \subsubsection{Dominio Transparente}
 Al listarse los directorios de un proyecto que cumple con los lineamiento de esta arquitectura, con tan solo leer el nombre de las carpetas debería ser posible, casi de inmediato, tener una idea de qué se trata esta aplicación, independientemente de la tecnología. Todo lo demás es un \emph{detalle de implementación}\cite{clean_five}.
@@ -45,7 +46,9 @@ Esta arquitectura propone un conjunto de características que debería seguir el
 	\item Comunicación entre Capas
 \end{itemize}
 \subsubsection{Regla de Dependencias}
-\emph{Las capas externas deben depender de las capas internas}. Permaneciendo en el centro las entidades del dominio inmediatamente seguidas por los objetos que encapsulan la lógica de negocio y que tienen acceso a tal dominio.  En la Figura ~\ref{fig:Diagrama_clasico} se muestran tres flechas en un recuadro rojo que representan el sentido de las dependencias. En lugar de ``depende'', tal vez sea mejor usar términos como ``ve'', ``conoce'' o ``está consciente de...''. En estos términos, las capas externas \emph{ven, conocen y son conscientes} de las capas internas, pero las capas internas \emph{no ven, no conocen, ni son conscientes} de las capas externas. Como se mencionó anteriormente, las capas internas contienen lógica de negocios y las capas externas  los detalles de implementación. Combinado con esta regla de dependencia, se deduce que la lógica de negocio no ve, ni conoce, detalles de implementación.
+\emph{Las capas externas deben depender de las capas internas}. Permaneciendo en el centro las entidades del dominio inmediatamente seguidas por los objetos que encapsulan la lógica de negocio y que tienen acceso a tal dominio.  En la Figura ~\ref{fig:Diagrama_clasico} se muestran tres flechas en un recuadro rojo que representan el sentido de las dependencias. 
+
+En lugar de ``depende'', tal vez sea mejor usar términos como ``ve'', ``conoce'' o ``está consciente de...''. En estos términos, las capas externas \emph{ven, conocen y son conscientes} de las capas internas, pero el recíproco está prohibido como regla de diseño. Como se mencionó anteriormente, las capas internas contienen lógica de negocio y las capas externas  los detalles de implementación. Combinado con el Principio Fundamental ~\ref{text:Clean_Princ_Fund}, se deduce que la lógica de negocio no ve, ni conoce detalles de implementación.
 
 No existe una única forma de implementar esta regla. Una estrategia consiste en colocar las clases de cada capa en paquetes diferentes, poniendo especial cuidado en no importar paquetes ``externos'' en paquetes ``internos''. Sin embargo, si algún programador del equipo no es consciente del principio de dependencias, nada les impediría romperlo. Un mejor enfoque sería separar las capas en diferentes módulos de construcción independiente, y ajustar las dependencias en el archivo de construcción para que la capa interna simplemente no pueda utilizar la capa externa, sin embargo este enfoque implica un exhaustivo conocimiento de la herramienta de construcción de la plataforma para la que se está desarrollando.
 
@@ -60,7 +63,7 @@ Para el presente proyecto se optó por la primera alternativa.
 \end{figure}
 
 \subsubsection{Principio de Abstracción}
-El principio de abstracción ya se ha insinuado antes. Postula que, a medida que se recorre el diagrama circular de la Figura ~\ref{fig:C2_PA} a lo largo del radio en dirección del centro, las implementaciones se vuelven más abstractas, agnósticas de plataformas y frameworks. Como se mencionó en la sección anterior el círculo interno contiene lógica de negocios mientras que el exterior comprende los detalles de implementación.
+El principio de abstracción ya se ha insinuado antes. Postula que, a medida que se recorre el diagrama circular de la Figura ~\ref{fig:C2_PA} a lo largo del radio en dirección del centro, las implementaciones se vuelven más abstractas, agnósticas de plataformas y frameworks. Como se mencionó en la sección anterior, el círculo interno contiene lógica de negocios mientras que el exterior comprende los detalles de implementación.
 
 \begin{figure}[htbp]
 	\centering
@@ -71,19 +74,17 @@ El principio de abstracción ya se ha insinuado antes. Postula que, a medida que
 \end{figure}
 
 \subsubsection{Comunicación entre Capas}
-Dado que en esta arquitectura la lógica de negocio se encuentra en el centro del diseño esta debe mediar entre los componentes externos de entrada y salida.
-El problema es que por la regla de dependencia esta capa ni siquiera sabe que estos componentes existen.
+Dado que en esta arquitectura la lógica de negocio se encuentra en el centro del diseño, esta debe mediar entre los componentes externos de entrada y salida.
+El problema es que, por la regla de dependencias, esta capa ni siquiera sabe que estos componentes existen.
 Esto representa un desafío ya que necesitamos que los datos sean capaces de fluir desde las capas externas a las internas y viceversa, sin violar la regla de dependencias.
 
 
 Se propone un método para resolver el problema de comunicación entre capas.
-En primera instancia se define los objetos \emph{Caso de Uso} como las entidades principales de la capa Lógica de Negocios.
+En primera instancia se define los objetos \emph{Caso de Uso} como las entidades principales de la Lógica de Negocios.
 Se conceptualizan dos puertos para cada caso de uso, uno de entrada y otro de salida.
 Mediante el puerto de entrada se reciben parámetros para la ejecución del caso de uso mientras que el puerto de salida permite la extracción de sus resultados.
-En la práctica el puerto de entrada es una clase 
+En la práctica, la definición de estos puertos (interfaces) se realiza dentro de la capa más interna mientras que su implementación e instanciación en la capa más externa. Esto satisface la regla de dependencias y puede visualizarse en la Figura ~\ref{fig:C2_CC_01}.
 
- 
-Solo tenemos dos capas, la verde y la roja. La capa verde es exterior y sabe sobre la capa roja, la roja es interior y solo se conoce a sí mismo. Necesitamos que los datos fluyan desde el verde al rojo y viceversa. La solución propuesta se muestra en el diagrama ~\ref{fig:C2_CC_01}:
 
 \begin{figure}[htbp]
 	\centering
@@ -93,10 +94,9 @@ Solo tenemos dos capas, la verde y la roja. La capa verde es exterior y sabe sob
 	\label{fig:C2_CC_01}
 \end{figure}
 
-En la parte inferior derecha del diagrama ~\ref{fig:C2_CC_01} muestra el flujo de datos. Los datos van desde el controlador, a través del puerto de entrada del caso de uso (o reemplazar el caso de uso con el componente de su elección), luego a través del propio caso de uso y después a través del puerto de salida del caso de uso al presentador.
 
-El controlador tiene un puerto de entrada, literalmente tiene una referencia a él. Llama a un método en él, de modo que los datos van del controlador al puerto de entrada. Pero el puerto de entrada es una interfaz, y la implementación real es el caso de uso: por lo que ha llamado un método en un caso de uso y los flujos de datos al caso de uso. El caso de uso hace algo y quiere enviar los datos de vuelta. Tiene una referencia al puerto de salida, ya que el puerto de salida está definido en la misma capa, por lo que puede llamar al método en él. Por lo tanto, los datos van al puerto de salida. Y finalmente, el presentador es, o implementa, el puerto de salida.
 \section{Diseño de Capas}
+
 \subsection{Capa de Presentación: MVP}
 \subsection{Capa de Dominio: Patrón Command}
 \subsection{Capa de Datos: Patrón Repository}
