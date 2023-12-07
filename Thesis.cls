@@ -173,7 +173,7 @@
 %	defined as \examname above so you cite it as \examname
 %----------------------------------------------------------------------------------------
 
-\thesistitle{Diseño e Implementación de una solución IoT para el control y monitoreo remoto de cerramientos eléctricos} % Your thesis title - this is used in the title and abstract
+\thesistitle{Cliente Android para control asíncrono de dispositivo IoT} % Your thesis title - this is used in the title and abstract
 %-------------------------------------------------  
 \supervisor{Ing. Santiago \textsc{Salamandri}} % You supervisor's name - this is used in the title page
 %-------------------------------------------------   
