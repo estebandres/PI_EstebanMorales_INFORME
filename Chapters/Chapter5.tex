@@ -27,7 +27,7 @@ Así mismo, debido a la naturaleza de los requerimientos definidos en el capítu
 
 Para realizar la implementación de la aplicación cliente se eligió la plataforma de desarrollo para dispositivos android, más precisamente teléfonos inteligentes y tabletas.
 
-El objetivo principal de emplear una estructura fija para la implementación del proyecto es utilizar un único "lenguaje arquitectónico" que resulte familiar a los integrantes de un posible equipo de desarrollo así como transversal tanto para la implementación android, iOS o cualquier otra plataforma que pueda aparecer durante la vida útil del producto. De esta manera no es necesario pagar un costo demasiado alto al incluir una implementación del mismo sistema para una plataforma distinta. 
+El objetivo principal de emplear una estructura fija para la implementación del proyecto es utilizar un único "lenguaje arquitectónico" que resulte familiar a los integrantes de un posible equipo de desarrollo y que sea transversal tanto para la implementación android, iOS o cualquier otra plataforma que pueda aparecer durante la vida útil del producto. De esta manera no es necesario pagar un costo demasiado alto al incluir una implementación del mismo sistema para una plataforma distinta. 
 Los equipos de cada una de estas implementaciones podrán discutir aspectos de diseño, validar reglas de negocio y evacuar dudas sin tener en cuenta los detalles de las plataformas, así mismo será más fácil conservar coherencia y mostrar armonía entre las implementaciones nativas para dichas plataformas.
 
 \subsection{Clean Architecture}
@@ -48,11 +48,9 @@ Esta arquitectura propone un conjunto de características que debería seguir el
 \subsubsection{Regla de Dependencias}
 \emph{Las capas externas deben depender de las capas internas}. Permaneciendo en el centro las entidades del dominio inmediatamente seguidas por los objetos que encapsulan la lógica de negocio y que tienen acceso a tal dominio.  En la Figura ~\ref{fig:Diagrama_clasico} se muestran tres flechas en un recuadro rojo que representan el sentido de las dependencias. 
 
-En lugar de ``depende'', tal vez sea mejor usar términos como ``ve'', ``conoce'' o ``está consciente de...''. En estos términos, las capas externas \emph{ven, conocen y son conscientes} de las capas internas, pero el recíproco está prohibido como regla de diseño. Como se mencionó anteriormente, las capas internas contienen lógica de negocio y las capas externas  los detalles de implementación. Combinado con el Principio Fundamental ~\ref{text:Clean_Princ_Fund}, se deduce que la lógica de negocio no ve, ni conoce detalles de implementación.
+En lugar de emplear el verbo ``depende'', tal vez sea mejor usar términos como ``ve'', ``conoce'' o ``está consciente de...''. En estos términos, las capas externas \emph{ven, conocen y son conscientes} de las capas internas, pero el recíproco está prohibido como regla de diseño. Como se mencionó anteriormente, las capas internas contienen lógica de negocio y las externas los detalles de implementación. Combinado con el Principio Fundamental ~\ref{text:Clean_Princ_Fund}, se deduce que la lógica de negocio no ve, ni conoce detalles de implementación.
 
-No existe una única forma de implementar esta regla. Una estrategia consiste en colocar las clases de cada capa en paquetes diferentes, poniendo especial cuidado en no importar paquetes ``externos'' en paquetes ``internos''. Sin embargo, si algún programador del equipo no es consciente del principio de dependencias, nada les impediría romperlo. Un mejor enfoque sería separar las capas en diferentes módulos de construcción independiente, y ajustar las dependencias en el archivo de construcción para que la capa interna simplemente no pueda utilizar la capa externa, sin embargo este enfoque implica un exhaustivo conocimiento de la herramienta de construcción de la plataforma para la que se está desarrollando.
-
-Para el presente proyecto se optó por la primera alternativa.
+No existe una única forma de implementar esta regla. Una estrategia consiste en colocar las clases de cada capa en paquetes diferentes, poniendo especial cuidado en no importar paquetes ``externos'' en paquetes ``internos''. Sin embargo, si algún programador del equipo no es consciente del principio de dependencias, nada le impediría incumplirlo. Otro enfoque un tanto más sofisticado consiste en separar las capas en diferentes módulos de construcción independiente, y ajustar las dependencias en el archivo de construcción para que la capa interna simplemente no pueda utilizar la capa externa, sin embargo este enfoque implica un exhaustivo conocimiento de la herramienta de construcción de la plataforma para la que se está desarrollando. Por esta razón para el presente proyecto se optó por la primera alternativa.
 
 \begin{figure}[htbp]
 	\centering
@@ -74,12 +72,12 @@ El principio de abstracción ya se ha insinuado antes. Postula que, a medida que
 \end{figure}
 
 \subsubsection{Comunicación entre Capas}
-Dado que en esta arquitectura la lógica de negocio se encuentra en el centro del diseño, esta debe mediar entre los componentes externos de entrada y salida.
-El problema es que, por la regla de dependencias, esta capa ni siquiera sabe que estos componentes existen.
+Dado que en esta arquitectura la lógica de negocio se encuentra en el centro del diseño, ésta debe mediar entre los componentes periféricos de entrada y salida.
+Aquí se presenta un inconveniente paradójico introducido por el empleo de la regla de dependencias: la capa con lógica de negocios ni siquiera conoce que los componentes en la periferia existen.
 Esto representa un desafío ya que necesitamos que los datos sean capaces de fluir desde las capas externas a las internas y viceversa, esto sin violar la regla de dependencias.
 
 
-Se propone un método para resolver el problema de comunicación entre capas.
+Se propone entonces un método para resolver el problema de comunicación entre capas.
 En primera instancia se define los objetos \emph{Caso de Uso} como las entidades principales de la Lógica de Negocios.
 Se conceptualizan dos puertos para cada caso de uso, uno de entrada y otro de salida.
 Mediante el puerto de entrada se reciben parámetros para la ejecución del caso de uso mientras que el puerto de salida permite la extracción de sus resultados.
@@ -96,8 +94,27 @@ En la práctica, la definición de estos puertos (interfaces) se realiza dentro 
 
 
 \section{Diseño de Capas}
+Como parte del proyecto de PPS se investigaron implementaciones reales de esta arquitectura en proyectos android.
+Las dos mejores disponibles a código abierto y con buena documentación pertenecen a un desarrollador argentino Fernando Cejas \cite{clean_cejas} (SoundCloud) y al repositorio de Blueprints Arquitectónicos de Google\cite{clean_android_blueprints}.\\
+Ambas propuestas dividen la implementación en tres capas principales, una capa de presentación, una capa de dominio y la capa de datos.
+Cada capa tiene una responsabilidad bien definida y se comunica con una única capa vecina respetando la regla de dependencias.
+La cadena de comunicación puede apreciarse en la figura ~\ref{fig:Diagrama_clasico2}. La capa de presentación transmite las acciones del usuario a la capa de dominio, la cual efectúa solicitudes de información a la capa de datos. Una vez resueltas, la capa de datos enviará los resultados de vuelta a la capa de dominio que ejecutará la lógica de negocios correspondiente. Esto genera una respuesta que, a su vez, produce los efectos deseados en la capa de presentación.\\
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.3\textwidth]{Figures/-006.png}
+	\rule{35em}{1pt}
+	\caption[Dependencia de Módulos]{Esquema de dependencias para una arquitectura en capas.}
+	\label{fig:Diagrama_clasico2}
+\end{figure}
+A continuación se describe brevemente las responsabilidades de cada capa.
 
-\subsection{Capa de Presentación: MVP}
+
+\begin{itemize}
+	\item Capa de Presentación: Esta capa se encarga de presentar la interfaz de usuario, esto es, mostrar por pantalla los objetos visuales correspondientes y recibir los eventos de interacción que realiza el usuario. Para la implementación se recomienda el empleo del patrón de diseño conocido como \textbf{MVP (Model View Presenter)}. 
+	\item Capa de Dominio: Esta capa contiene toda la lógica de negocio. La capa de dominio contiene las clases denominadas casos de uso o interactores según la literatura. Estos objetos encapsulan los escenarios contemplados por la lógica de negocio y son ejecutados por la capa de presentación. Estos casos de uso representan todas las acciones posibles admitidas por el sistema y que pueden ser compuestas en la implementación por los desarrolladores siempre desde la capa de presentación. Para la implementación de estos casos de uso se sugiere la utilización del patrón de diseño conocido como \textbf{Command Pattern}.
+	\item Capa de Datos: Esta capa administra la adquisición de datos y es capaz de utilizar diferentes orígenes de datos, así como la lógica de cache o persistencia temporal. Esta capa se suele implementar utilizando el patrón de diseño conocido como \textbf{Repository Pattern}.  
+\end{itemize}
+\subsection{Capa de Presentación: Model View Presenter (MVP)}
 \subsection{Capa de Dominio: Patrón Command}
 \subsection{Capa de Datos: Patrón Repository}
 
