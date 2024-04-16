@@ -121,10 +121,39 @@ A continuación se describe brevemente las responsabilidades de cada capa.
 \section{Programación Reactiva}
 \subsection{Aplicación sobre la Arquitectura}
 
-\section{Interfaces}
-\subsection{Modulo - Aplicación}
-\subsubsection{RPC}
-\subsubsection{Definición de la API}
+\section{Interfaz Módulo - Aplicación}
+\subsection{RPC API}
+\begin{sidewaystable}[!htbp] 
+	\scriptsize
+	\rowcolors*{1}{black!10}{}
+	\begin{tabularx}{\columnwidth}{|c|>{\bfseries\ttfamily}l|>{\raggedright\arraybackslash}X|>{\ttfamily}X|>{\ttfamily}X|X|}
+		\hline
+		\multicolumn{1}{|c|}{Código} & \multicolumn{1}{c|}{Protocolo} & \multicolumn{1}{c|}{Descripción}       & \multicolumn{1}{c|}{Argumentos} & \multicolumn{1}{c|}{Respuesta} & \multicolumn{1}{c|}{Errores} \\ \hline
+		
+		100  & Admin.FactoryReset   & Elimina las configuraciones y los usuarios registrados. Volviendo al estado de fabrica & \{\}    & 
+		\{"message":string\} & 
+		401 Unauthorized \newline
+		403 Forbidden  \\  \hline
+		
+		101  & Admin.SetWiFiAP      &      &         &        &      \\ \hline
+		102  & Admin.GetUsers       &      &         &        &      \\ \hline
+		103  & Admin.UpdateUser     &      &         &        &      \\ \hline
+		104  & Admin.DeleteUser     &      &         &        &      \\ \hline
+		105  & Admin.Trigger        &      &         &        &      \\ \hline
+		106  & Admin.CreateUser     &      &         &        &      \\ \hline
+		107  & Admin.EnableUpdate   &      &         &        &      \\ \hline
+		108  & Admin.SetGateStatus  &      &         &        &      \\ \hline
+		109  & Admin.GetGateStatus  &      &         &        &      \\ \hline
+		200  & Guest.CreateUser     &      &         &        &      \\ \hline
+		201  & Guest.UserStatus     &      &         &        &      \\ \hline
+		203  & Sys.GetInfo&      &         &        &      \\ \hline
+		300  & User.Trigger         &      &         &        &      \\ \hline
+		301  & User.GetGateStatus   &      &         &        &      \\ \hline
+		& /update&      &         &        &      \\ \hline
+		& /update/commit       &      &         &        &      \\ \hline
+	\end{tabularx}
+	\caption{Protocolos remotos proporcionados por el firmware del modulo}
+\end{sidewaystable}
 
 \section{Protocolos de Comunicación}
 \subsection{MDNS DNS-SD}
