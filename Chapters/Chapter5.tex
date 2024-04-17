@@ -126,31 +126,67 @@ A continuación se describe brevemente las responsabilidades de cada capa.
 \begin{sidewaystable}[!htbp] 
 	\scriptsize
 	\rowcolors*{1}{black!10}{}
-	\begin{tabularx}{\columnwidth}{|c|>{\bfseries\ttfamily}l|>{\raggedright\arraybackslash}X|>{\ttfamily}X|>{\ttfamily}X|X|}
+	\begin{tabularx}{\columnwidth}{|c|>{\bfseries\ttfamily}l|>{\raggedright\arraybackslash}X|>{\ttfamily}X|>{\ttfamily}X|>{\tiny\ttfamily}X|}
 		\hline
-		\multicolumn{1}{|c|}{Código} & \multicolumn{1}{c|}{Protocolo} & \multicolumn{1}{c|}{Descripción}       & \multicolumn{1}{c|}{Argumentos} & \multicolumn{1}{c|}{Respuesta} & \multicolumn{1}{c|}{Errores} \\ \hline
+		\multicolumn{1}{|>{\bfseries}c|}{Código} & \multicolumn{1}{>{\bfseries}c|}{Protocolo} & \multicolumn{1}{>{\bfseries}c|}{Descripción}  & \multicolumn{1}{>{\bfseries}c|}{Argumentos} & \multicolumn{1}{>{\bfseries}c|}{Respuesta} & \multicolumn{1}{>{\bfseries}X|}{Errores
+			\newline \tiny\texttt{401 Unauthorized  \newline
+				403 Forbidden \newline \{``code'':int, ``message'':string\}}{}  } \\ \hline
 		
-		100  & Admin.FactoryReset   & Elimina las configuraciones y los usuarios registrados. Volviendo al estado de fabrica & \{\}    & 
-		\{"message":string\} & 
-		401 Unauthorized \newline
-		403 Forbidden  \\  \hline
+		100  & Admin.FactoryReset   & Elimina las configuraciones y los usuarios registrados. & \{\}    & 
+		\{"message":string\} &  \\  \hline
 		
-		101  & Admin.SetWiFiAP      &      &         &        &      \\ \hline
-		102  & Admin.GetUsers       &      &         &        &      \\ \hline
-		103  & Admin.UpdateUser     &      &         &        &      \\ \hline
-		104  & Admin.DeleteUser     &      &         &        &      \\ \hline
-		105  & Admin.Trigger        &      &         &        &      \\ \hline
-		106  & Admin.CreateUser     &      &         &        &      \\ \hline
-		107  & Admin.EnableUpdate   &      &         &        &      \\ \hline
-		108  & Admin.SetGateStatus  &      &         &        &      \\ \hline
-		109  & Admin.GetGateStatus  &      &         &        &      \\ \hline
-		200  & Guest.CreateUser     &      &         &        &      \\ \hline
-		201  & Guest.UserStatus     &      &         &        &      \\ \hline
-		203  & Sys.GetInfo&      &         &        &      \\ \hline
-		300  & User.Trigger         &      &         &        &      \\ \hline
-		301  & User.GetGateStatus   &      &         &        &      \\ \hline
-		& /update&      &         &        &      \\ \hline
-		& /update/commit       &      &         &        &      \\ \hline
+		101  & Admin.SetWiFiAP      &  Conecta el módulo a un Access Point WiFi.     &   \{"ssid": "string","password"": "string"\}      &  \{"message":string\}      &    	
+		400 Bad Request \newline
+		[ssid and password required] \newline
+		[wrong ssid or password] \\ \hline
+		
+		102  & Admin.GetUsers       &  Devuelve la lista de usuarios.    &   \{\}      &   \{``users'': [\{``user\_name'':string, ``user\_type'':int\}]\}     &    \\ \hline
+		 
+		103  & Admin.UpdateUser     &   Cambia el nivel de privilegio del usuario pasado como parametro   &   \{``user\_name'':string, ``user\_type'':int\}      &   \{"message":``user updated''\}     &   
+		400 Bad Request \newline
+		[username or type incorrect] \newline
+		404 Not Found \newline
+		[user not found]    \\ \hline
+		
+		104  & Admin.DeleteUser     &   Elimina un usuario del módulo   &   \{``user\_name'':string\}      &     \{"message":``user deleted''\}    &   
+		404 Not Found \newline
+		[user not found] \newline
+		500 Internal Error \newline
+		[user not deleted from server] \\ \hline
+		
+		105  & Admin.Trigger        &   Acciona el módulo   &   \{\}      &    \{"message":``Triggering gate''\}     &   
+		500 Internal Error \newline
+		[user changed type]
+		\\ \hline
+		106  & Admin.CreateUser     &   Crea un usuario provisorio, pendiente de aprobación.   &    \{``user\_name'':string\}     &   \{``user\_type'':int\}     &    
+		400 Bad Request\newline
+		[credentials parameter is required]\newline
+		[credentials error]\newline
+		409 Conflict\newline
+		[user already exists]\newline
+		412 Precondition Failed\newline
+		[user's max qty reached]
+		
+		\\ \hline
+		107  & Admin.EnableUpdate   &   Habilita el proceso de actualización del firmware del módulo   &    \{\}     &     \{"message":``OTA Update Enabled''\}     &      \\ \hline
+		108  & Admin.SetGateStatus  &  Cambia el estado de apertura    &    \{``status\_code'':int\}     &   \{``status\_code'':int\}     &   
+		\\ \hline
+		109  & Admin.GetGateStatus  &   Devuelve el estado de apertura   &    \{\}     &   \{``status\_code'':int, ``opening\_percentage'':int\}     &      \\ \hline
+		200  & Guest.CreateUser     &   Crea una solicitud de acceso   &   \{``credentials'':string\}      &    \{``user\_type'':int\}    &   
+		\textbf{IDEM 106 \newline No Aplican Errores 401 y 403}
+		\\ \hline
+		201  & Guest.UserStatus     &   Devuelve el nivel del usuario solicitado   &    \{``user\_name'':string\}     &   \{``user\_name'':string, ``user\_type'':int\}     &  
+		\textbf{No Aplican Errores 401 y 403}\newline
+		400 Bad Request\newline
+		[User Name is required]\newline
+		404 Not Found \newline
+		[user not found] \newline
+		\\ \hline
+		203  & Sys.GetInfo          &      &         &        &      \\ \hline
+		300  & User.Trigger         &  \multicolumn{4}{|X|}{\scriptsize{\textbf{IDEM 105}} }   \\ \hline
+		301  & User.GetGateStatus   &   \multicolumn{4}{|l|}{\scriptsize{\textbf{IDEM 109}} }      \\ \hline
+		& /update&    \multicolumn{4}{|l|}{\scriptsize{\textbf{Envía el nuevo firmware como un POST multiparte fijando el parámetro commit\_timeout=75 (segundos).}} }  \\ \hline
+		& /update/commit       &   \multicolumn{4}{|l|}{\scriptsize{\textbf{Se confirma la correcta actualización ejecutando el RPC OTA.Commit con un POST a este endpoint}} }     \\ \hline
 	\end{tabularx}
 	\caption{Protocolos remotos proporcionados por el firmware del modulo}
 \end{sidewaystable}
