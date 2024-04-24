@@ -268,18 +268,66 @@ Afortunadamente, y de la mano de el proyecto ReactiveX, estas adaptaciones para 
 
 
 \section{Interfaz Módulo - Aplicación}
-Para la configuración inicial el módulo genera un Access Point WiFi 
+Para la configuración inicial el módulo genera un Access Point WiFi, el teléfono android se conectará a éste generando una LAN IPv4 con solo estos dos dispositivos. Utilizando esta red la aplicación enviará las credenciales del router WiFi para operación regular.
+
 El modo de operación regular del producto requiere que el módulo electrónico y el teléfono android con la aplicación estén conectados al mismo router WiFi. De esta manera ambos dispositivos pertenecen a la misma LAN IPv4.
-Como parte del diseño del sistema se eligió el protocolo HTTP para el intercambio de mensajes entre el módulo y la app.
+El módulo publicará su hostname, nombre de servicio y metadata adicional empleando los protocolos de 
+Como parte del diseño del sistema se eligió el protocolo HTTP para el intercambio de mensajes entre el módulo y la aplicación móvil. Ya sea para la configuración inicial o la operación regular.
 
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.9\textwidth]{Figures/design/conect.png}
+	\rule{35em}{1pt}
+	\caption[Connection Diagram]{Diagrama de comunicación entre módulo y aplicación.}
+	\label{fig:comunic_mod_app}
+\end{figure}
 
-En una segunda etapa se extenderá el modo de comunicación entre el módulo y la aplicación móvil a través de internet empleando el protocolo MQTT 
+En una segunda etapa se extenderá el modo de comunicación entre el módulo y la aplicación móvil a través de internet empleando el protocolo MQTT.
 
 \subsection{Protocolos de Comunicación}
 \subsubsection{MDNS DNS-SD}
+La aplicación móvil podrá descubrir todos los módulos disponibles en la LAN.
+Para conseguir esto se optó por utilizar un enfoque Zeroconf que emplee DNS-SD y mDNS para resolver los hostnames de los módulos compatibles y sus direcciones IP. Incluso en la literatura existe una confusión entre estos términos por lo que será debidamente aclarada antes de continuar.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.4\textwidth]{Figures/design/zeroconf_venn.png}
+	\rule{35em}{1pt}
+	\caption[Connection Diagram]{Diagrama de Venn que ilustra la relación entre los términos.}
+	\label{fig:zeroconf_venn}
+\end{figure}
+
+\textbf{Zeroconf} (Zero Configuration Networking) no es un estándar sino un termino acuñado en la década de 1990 para denotar a la colección de protocolos y tecnologías que habilitan la configuración automática de redes y el descubrimiento de servicios en redes locales.
+
+\textbf{mDNS} es un protocolo de capa de aplicación (RFC 6762) y se presenta como una extensión sobre \emph{DNS unicast} para la resolución de nombres en redes de área local. Este protocolo resuelve exclusivamente nombres de host que terminan con \texttt{.local} como dominio raíz. A diferencia de DNS la información de resolución se almacena localmente en cada dispositivo de la red y el intercambio de mensajes se realiza a una dirección multicast dónde cada dispositivo responde directamente a las consultas. 
+
+\textbf{DNS-SD} es un estándar de capa de aplicación (RFC 6763) que permite a clientes DNS descubrir instancias nombradas de un servicio utilizando registros DNS (RR). Una instancia de servicio en DNS-SD se describe utilizando los siguientes RR: SRV, TXT, PTR y A/AAAA. 
+\begin{itemize}
+	\item PTR proporciona el mapeo entre tipos de servicio e instancias de servicio que lo proveen.
+	\item SRV contiene información de la instancia de servicio, tipo de servicio (protocolo) peso, puerto y endpoint. Los parámetros de prioridad y peso dan preferencia cuando el mismo servicio es proporcionado por múltiples instancias. El parámetro endpoint respeta el formato de nombre de host.
+	\item TXT contiene los metadatos del servicio en forma de pares [clave]:[valor]. El contenido exacto depende del protocolo utilizado.
+	\item A/AAAA Resuelve una dirección IP a partir de un nombre de host.
+\end{itemize}
+En mDNS/DNS-SD, todos los RRs que describen una instancia de servicio se almacenan en el nodo que proporciona tal servicio.
+
+\textbf{Bonjour} es una implementación zeroconf desarrollada por Apple. Emplea mDNS como protocolo de comunicación y DNS-SD para el descubrimiento y descripción de servicios.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Figures/design/SEQ_mdns_dnssd_ink.png}
+	\rule{35em}{1pt}
+	\caption[Connection Diagram]{Secuencia del descubrimiento de servicios.}
+	\label{fig:zeroconf_seq}
+\end{figure}
+
+Android ofrece una API para el descubrimiento de dispositvos \emph{Network Service Discovery API} pero ésta no soporta la consulta de registros TXT. Google ofrece también la \emph{Google Nearby API} una librería de similares características pero que es de código cerrado y no proporciona el nivel de granularidad adecuado para este proyecto. Por estos motivos se optó por emplear la librería \emph{RxDNSSD} que hace de wrapper reactivo sobre la implementación de Bonjour.
+
 \subsubsection{HTTP y Digest Authentication}
 \subsubsection{MQTT}
-
+Uno de los atractivos del producto es la posibilidad de monitorear y accionar módulos de manera remota a través de internet. Para que esto sea posible es necesario que tanto el módulo como la aplicación móvil tengan acceso a la nube que hará de canal de comunicación entre ambos.
+Luego de discutir alternativas el equipo decidió que la comunicación por internet se realizará utilizando el protocolo MQTT.
+MQTT es un protocolo de capa de aplicación (RFC 9431) 
+ 
 \subsection{RPC API}
 \begin{sidewaystable}[!htbp] 
 	\scriptsize
@@ -348,6 +396,3 @@ En una segunda etapa se extenderá el modo de comunicación entre el módulo y l
 	\end{tabularx}
 	\caption{Protocolos remotos proporcionados por el firmware del modulo}
 \end{sidewaystable}
-
-
-
