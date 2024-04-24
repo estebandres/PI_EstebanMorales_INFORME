@@ -46,7 +46,7 @@ Esta arquitectura propone un conjunto de características que debería seguir el
 	\item Comunicación entre Capas
 \end{itemize}
 \subsubsection{Regla de Dependencias}
-\emph{Las capas externas deben depender de las capas internas}. Permaneciendo en el centro las entidades del dominio inmediatamente seguidas por los objetos que encapsulan la lógica de negocio y que tienen acceso a tal dominio.  En la Figura ~\ref{fig:Diagrama_clasico} se muestran tres flechas en un recuadro rojo que representan el sentido de las dependencias. 
+\emph{Las capas externas deben depender de las capas internas}. Permaneciendo en el centro las entidades del dominio inmediatamente seguidas por los objetos que encapsulan la lógica de negocio y que tienen acceso a tal dominio.  En la Figura ~\ref{fig:Diagrama_clasico} una ilustración con una flecha que representa el sentido de las dependencias. 
 
 En lugar de emplear el verbo ``depende'', tal vez sea mejor usar términos como ``ve'', ``conoce'' o ``está consciente de...''. En estos términos, las capas externas \emph{ven, conocen y son conscientes} de las capas internas, pero el recíproco está prohibido como regla de diseño. Como se mencionó anteriormente, las capas internas contienen lógica de negocio y las externas los detalles de implementación. Combinado con el Principio Fundamental ~\ref{text:Clean_Princ_Fund}, se deduce que la lógica de negocio no ve, ni conoce detalles de implementación.
 
@@ -54,18 +54,18 @@ No existe una única forma de implementar esta regla. Una estrategia consiste en
 
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=1\textwidth]{Figures/-001.png}
+	\includegraphics[width=1\textwidth]{Figures/arch_regla_dependencias}
 	\rule{35em}{1pt}
 	\caption[Principio de Dependecias]{Esquema de dependencias para una arquitectura en capas.}
 	\label{fig:Diagrama_clasico}
 \end{figure}
 
 \subsubsection{Principio de Abstracción}
-El principio de abstracción ya se ha insinuado antes. Postula que, a medida que se recorre el diagrama circular de la Figura ~\ref{fig:C2_PA} a lo largo del radio en dirección del centro, las implementaciones se vuelven más abstractas, agnósticas de plataformas y frameworks. Como se mencionó en la sección anterior, el círculo interno contiene lógica de negocios mientras que el exterior comprende los detalles de implementación.
+El principio de abstracción ya se ha insinuado antes. Postula que, a medida que se recorre el diagrama de la arquitectura de la Figura ~\ref{fig:C2_PA} a lo largo del radio en dirección del centro, las implementaciones se vuelven más abstractas, agnósticas de plataformas y frameworks. Como se mencionó en la sección anterior, el círculo interno contiene lógica de negocios mientras que el exterior comprende los detalles de implementación.
 
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=1\textwidth]{Figures/-002.png}
+	\includegraphics[width=0.5\textwidth]{Figures/arch_regla_abstraccion.png}
 	\rule{35em}{1pt}
 	\caption[Abstraction Principle]{Principio de Abstracción en una arquitectura por capas.}
 	\label{fig:C2_PA}
@@ -86,7 +86,7 @@ En la práctica, la definición de estos puertos (interfaces) se realiza dentro 
 
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=1\textwidth]{Figures/-004.png}
+	\includegraphics[width=1\textwidth]{Figures/arch_comunicacion_capas.png}
 	\rule{35em}{1pt}
 	\caption[Layer Communication]{Comunicación entre capas.}
 	\label{fig:C2_CC_01}
@@ -115,13 +115,171 @@ A continuación se describe brevemente las responsabilidades de cada capa.
 	\item Capa de Datos: Esta capa administra la adquisición de datos y es capaz de utilizar diferentes orígenes de datos, así como la lógica de cache o persistencia temporal. Esta capa se suele implementar utilizando el patrón de diseño conocido como \textbf{Repository Pattern}.  
 \end{itemize}
 \subsection{Capa de Presentación: Model View Presenter (MVP)}
+El patrón de arquitectura que se utiliza en la capa de presentación se conoce como Modelo-Vista-Presentador.
+La idea detrás del patrón es concentrar la interacción con el usuario en una entidad conocida como presentador, las operaciones directamente relacionadas con la manipulación de objetos gráficos y la captura de acciones de usuario están delegadas a la entidad Vista, finalmente la adquisición de datos y la ejecución de los algoritmos que encapsulan la lógica de negocio forman parte de las entidades modelo en el patrón \cite{mvp_leiva}.
+El diagrama de componentes ~\ref{fig:uml_mvp_component} describe la relación entre los objetos principales.
+
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.5\textwidth]{Figures/design/COMP_mvp.png}
+	\rule{35em}{1pt}
+	\caption[MVP Components]{Diagrama de componentes del patrón.}
+	\label{fig:uml_mvp_component}
+\end{figure}
+
+Es posible deducir el modo en que interactúan los componentes. El presentador se comunica de manera bidireccional con la vista y de manera unidireccional con el modelo.
+
+Una convención para la implementación del patrón es tratar de generar vistas completamente ajenas de cualquier lógica operativa y agnósticas del estado de la aplicación. Esto las convierte en un mero instrumento de interfaz entre lo que percibe el usuario y sus reacciones. 
+
+Otra de las convenciones sugiere utilizar objetos modelo-vista en la comunicación entre el presentador y la vista para estandarizar el tipo de mensaje y el proceso de actualización de la vista.
+
+En el caso de las implementaciones antes mencionadas la interfaz con el modelo es satisfecha mediante el uso de objetos casos de uso ó interactores, ambos términos suelen utilizarse de manera intercambiable.
+
+La secuencia de mensajes que son intercambiados entre los objetos del patrón se ilustran en el diagrama de secuencias ~\ref{fig:uml_mvp_sequence}
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.7\textwidth]{Figures/design/SEQ_mvp.png}
+	\rule{35em}{1pt}
+	\caption[MVP Sequence]{Diagrama de secuencia para una interacción con el usuario utilizando MVP.}
+	\label{fig:uml_mvp_sequence}
+\end{figure}
+
+
 \subsection{Capa de Dominio: Patrón Command}
+El patrón de diseño \emph{Command} se utiliza para abstraer la ejecución de procedimientos mediante la implementación de entidades comando \cite{comm_sugrue}. Estos objetos ejecutan un único algoritmo y encapsulan la lógica de negocio de la aplicación o sistema.
+Originalmente el diseño contempla 4 entidades principales que se pueden apreciar en el diagrama de clases de la figura ~\ref{fig:uml_clases_commander}:
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Figures/design/CLASS_command_versus.png}
+	\rule{35em}{1pt}
+	\caption[Commander Classes]{Diagrama de clases para el planteo inicial del patrón Command y su adaptación para este proyecto.}
+	\label{fig:uml_clases_commander}
+\end{figure}
+
+\begin{enumerate}
+	\item Cliente: Este componente se encarga de crear las instancias de cada comando y distribuirlas entre los correspondientes invocadores.
+	\item Receptor: Es la entidad que se ve afectada por la ejecución de un comando. Puede ser compartida por varios comandos o bien un único comando puede interactuar con varios receptores en su ejecución.
+	\item Comando: Es el objeto que contiene la implementación del algoritmo o lógica de ejecución.
+	\item Invocador: Se encarga de ejecutar instancias de comandos.
+\end{enumerate}
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Figures/design/SEQ_command_def_req_resp.png}
+	\rule{35em}{1pt}
+	\caption[MVP Components]{Diagrama de secuencia para el patrón Commander.}
+	\label{fig:uml_commander_sequence}
+\end{figure}
+
+La mayoría de los ejemplos de aplicación de este patrón implementan un comando
+por cada una de las operaciones soportadas por el sistema o aplicación. Sin embargo en sistemas suficientemente grandes la diversidad de funcionalidades soportadas es tal que el diseño propuesto se vuelve impráctico.
+Para mitigar este problema se suele implementar de manera adicional una modificación que permite la ejecución paramétrica de los comandos para reducir al máximo la cantidad de comandos implementados.
+Esta modificación permite diversas alternativas de implementación pero la más utilizada incorpora  conceptos del patrón Request-Response dónde el comando es utilizado como un objeto tipo caja negra que admite Solicitudes y emite Respuestas estandarizadas para cada caso.
+\begin{itemize}
+	\item Solicitud (Request): Un objeto que contiene el conjunto de parámetros de entrada que deben ser satisfechos para poder realizar la ejecución de la rutina del comando.
+	\item Respuesta (Response): Un objeto que contiene los valores que se obtuvieron de la ejecución del algoritmo del comando.
+\end{itemize}
+
+Teniendo en cuenta estos detalles se describe el flujo de operación y ejecución ~\ref{fig:uml_commander_sequence_req_resp} de un comandos:
+
+\begin{enumerate}
+	\item El cliente crea instancias de comandos y sus correspondientes invocadores. 
+	\item El invocador crea e inicializa los objeto solicitud necesarios para ejecutar cada comando.
+	\item El invocado ejecuta los comandos llamando al método ''ejecutar'' implementado por cada comando pasando como parámetro la solicitud previamente creada.
+	\item El invocador observa los resultados en espera activa implementando el patrón Observer o mediante algún esquema de callback.
+\end{enumerate}
+
+
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Figures/design/SEQ_command_app.png}
+	\rule{35em}{1pt}
+	\caption[Commander Review]{Diagrama de secuencia para el diseño revisado.}
+	\label{fig:uml_commander_sequence_req_resp}
+\end{figure}
+
+Siguiendo los lineamientos de la arquitectura propuesta los autores denominan a los comandos: Casos de Uso, ó Interactores.
+
+Como una nota relevante de implementación se recomienda ejecutar las rutinas de los comandos en un hilo/proceso separado para evitar bloquear el proceso principal de la aplicación.
+
 \subsection{Capa de Datos: Patrón Repository}
+En la capa de datos se propone la implementación de un patrón de diseño conocido como Repository(Repositorio). 
+Originalmente se concibe a este diseño como una forma de estandarizar la implementación y el uso de los objetos DAO (Data Access Object) comúnmente utilizados para mapear objetos entidad con las persistencias en la base de datos \cite{repo_wolf}.
+Adicionalmente este patrón encapsula en la clase repositorio todos los métodos particulares de filtrado, procesamiento calculado y ordenamiento de entidades.
+Sin embargo se define una interfaz genérica que deberá ser respetada por todas las implementaciones de repositorios para todo el sistema independientemente de la entidad que atienda.
+En el diagrama de clases de la figura ~\ref{fig:uml_clases_repository} se puede apreciar el diseño original del patrón.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Figures/design/CLASS_repository_def.png}
+	\rule{35em}{1pt}
+	\caption[Repository Pattern Class Diagram]{Diagrama de clases del patrón Repository.}
+	\label{fig:uml_clases_repository}
+\end{figure}
+
+Como puede apreciarse en el diagrama se definen:
+\begin{itemize}
+	\item IRepositorio: es una interfaz genérica que establece el contrato básico que deben respetar todas las implementaciones de repositorios.
+	\item RepositorioImpl: es una clase genérica que establece la interacción con una fuente de datos genérica.
+	\item IRepositorioEntidad: es la interfaz que \textit{Especifica} la interfaz genérica de repositorio y establece el contrato o métodos particulares que deberá cumplir la implementación concreta de repositorio para esta Entidad en particular.
+	\item RepositorioEntidadImpl: es la clase que \textit{Especifica} la implementación genérica de repositorio e implementa los métodos particulares para esta Entidad en particular.
+\end{itemize}
+
+En una repaso más detallado del diagrama puede observarse que existen dos interfaces genéricas para acceso de datos IRepository y IDataSource, esto podría generar confusión y duplicación de código. Adicionalmente en cualquier implementación moderna de sistemas con persistencia es prácticamente mandatario el empleo de frameworks que soportan ORM (Object Relational Mapping) out-of-the-box.
+En la figura ~\ref{fig:uml_clases_detalles_repository} se puede observar la modificación sobre la propuesta original del patrón de diseño.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Figures/design/CLASS_repository_less.png}
+	\rule{35em}{1pt}
+	\caption[Repository Pattern Detailed Class Diagram]{Diagrama de clases reducido del patrón Repository.}
+	\label{fig:uml_clases_detalles_repository}
+\end{figure}
+
+En las implementaciones mencionadas se reemplaza la interfaz del repositorio por la interfaz fuente de datos. Coloquialmente es fácil de entender ya que un repositorio definitivamente es una fuente de datos. Si además se quita la estandarización por genéricos se consigue un diseño más sencillo y que genera menos código estructural o scafold manteniendo un único contrato o interfaz de acceso a los datos. En la figura ~\ref{fig:uml_clases_modif_repository} se puede observar la modificación mencionada y el diseño final propuesto para la implementación del patrón.
+
+ \begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.5\textwidth]{Figures/design/CLASS_repository_reduced.png}
+	\rule{35em}{1pt}
+	\caption[Modified Repository Pattern Class Diagram]{Diagrama de clases del patrón Repository modificado.}
+	\label{fig:uml_clases_modif_repository}
+\end{figure}
+
+Principalmente orientado a encapsular la manipulación, selección, priorización y mantenimiento de diversas fuentes u orígenes de datos, este diseño de repositorios modificado permite que el peticionario se comunique con una única interfaz para solicitar operaciones sobre datos permaneciendo agnóstico del origen  sobre el cual tendrán impacto. 
+Implementar una política de caching local se convierte en una tarea sencilla de implementar y mantener.
 
 \section{Programación Reactiva}
-\subsection{Aplicación sobre la Arquitectura}
+Se trata de un paradigma de programación cuya máxima sostiene que el código debe observar y reaccionar a estímulos internos y externos como eventos, interrupciones, resultados, etc. Estos estímulos por lo general se manifiestan como unidades de datos y tienen como característica principal su naturaleza asíncrona o de sucesión impredecible. Por lo que el código deberá observar de manera continua la ocurrencia de estos y reaccionar consecuentemente. En la jerga, la sucesión de estímulos de una misma fuente se denomina flujo.
+
+Se definen tres entidades fundamentales para este paradigma: los \textbf{Estímulos}, sus \textbf{Emisores} y quienes los \textbf{Observan}. También se admite la concatenación de este trío de entidades lo que produce operadores que podrán ,a su vez, generar el mismo flujo o uno modificado.
+
+En términos meramente lingüísticos al adaptar un lenguaje de programación procedural u orientado a objetos para que soporte este paradigma se le confieren atributos que originalmente eran propios de la programación funcional como lo son la composición de funciones y el tratamiento de datos como flujos o secuencias, lo que permite un abordaje más natural a problemas que implican manejo de eventos, concurrencia y asincronía.
+Así mismo la programación reactiva promueve la inmutabilidad y la pureza funcional, especialmente en la manipulación de datos a través de operadores. Los cuales en los flujos reactivos suelen aplicar transformaciones inmutables a los datos, lo que garantiza que los originales no se modifiquen y que las operaciones sean consistentes y predecibles.
+
+En términos arquitectónicos este paradigma implica la implementación del patrón \emph{Observer} para los objetos que observan los estímulos y el patrón \emph{Iterator} para los emisores. Será necesario también convertir a las funciones en entidades del lenguaje con estatus de  \emph{First Class Citizen} para admitir su composición de manera genérica.
+
+Afortunadamente, y de la mano de el proyecto ReactiveX, estas adaptaciones para lenguajes no funcionales se ofrecen como librerías que implementan las tres entidades, una colección de operadores y el manejo de las primitivas de concurrencia. En particular para Java existe la librería RxJava que es la que utilizaré en el proyecto.
+
+
 
 \section{Interfaz Módulo - Aplicación}
+Para la configuración inicial el módulo genera un Access Point WiFi 
+El modo de operación regular del producto requiere que el módulo electrónico y el teléfono android con la aplicación estén conectados al mismo router WiFi. De esta manera ambos dispositivos pertenecen a la misma LAN IPv4.
+Como parte del diseño del sistema se eligió el protocolo HTTP para el intercambio de mensajes entre el módulo y la app.
+
+
+En una segunda etapa se extenderá el modo de comunicación entre el módulo y la aplicación móvil a través de internet empleando el protocolo MQTT 
+
+\subsection{Protocolos de Comunicación}
+\subsubsection{MDNS DNS-SD}
+\subsubsection{HTTP y Digest Authentication}
+\subsubsection{MQTT}
+
 \subsection{RPC API}
 \begin{sidewaystable}[!htbp] 
 	\scriptsize
@@ -182,17 +340,14 @@ A continuación se describe brevemente las responsabilidades de cada capa.
 		404 Not Found \newline
 		[user not found] \newline
 		\\ \hline
-		203  & Sys.GetInfo          &      &         &        &      \\ \hline
+		203  & Sys.GetInfo          & Devuelve información de sistema del módulo     &    \{\}     &    \{``app'':string, ``fw\_version'':string, ``fw\_id'':string ,``mac'':string, ``uptime'':int\}    &      \\ \hline
 		300  & User.Trigger         &  \multicolumn{4}{|X|}{\scriptsize{\textbf{IDEM 105}} }   \\ \hline
 		301  & User.GetGateStatus   &   \multicolumn{4}{|l|}{\scriptsize{\textbf{IDEM 109}} }      \\ \hline
 		& /update&    \multicolumn{4}{|l|}{\scriptsize{\textbf{Envía el nuevo firmware como un POST multiparte fijando el parámetro commit\_timeout=75 (segundos).}} }  \\ \hline
-		& /update/commit       &   \multicolumn{4}{|l|}{\scriptsize{\textbf{Se confirma la correcta actualización ejecutando el RPC OTA.Commit con un POST a este endpoint}} }     \\ \hline
+		& /update/commit       &   \multicolumn{4}{|l|}{\scriptsize{\textbf{Se confirma la correcta actualización ejecutando el RPC OTA.Commit con un POST para evitar el rollback por timeout.}} }     \\ \hline
 	\end{tabularx}
 	\caption{Protocolos remotos proporcionados por el firmware del modulo}
 \end{sidewaystable}
 
-\section{Protocolos de Comunicación}
-\subsection{MDNS DNS-SD}
-\subsection{HTTP y Digest Authentication}
-\subsection{MQTT}
+
 
