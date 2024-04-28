@@ -268,11 +268,16 @@ Afortunadamente, y de la mano de el proyecto ReactiveX, estas adaptaciones para 
 
 
 \section{Interfaz Módulo - Aplicación}
-Para la configuración inicial el módulo genera un Access Point WiFi, el teléfono android se conectará a éste generando una LAN IPv4 con solo estos dos dispositivos. Utilizando esta red la aplicación enviará las credenciales del router WiFi para operación regular.
+\label{section:interfaces}
+\emph{El monitoreo y control de los módulos se realiza utilizando la aplicación móvil.}
 
-El modo de operación regular del producto requiere que el módulo electrónico y el teléfono android con la aplicación estén conectados al mismo router WiFi. De esta manera ambos dispositivos pertenecen a la misma LAN IPv4.
-El módulo publicará su hostname, nombre de servicio y metadata adicional empleando los protocolos de 
-Como parte del diseño del sistema se eligió el protocolo HTTP para el intercambio de mensajes entre el módulo y la aplicación móvil. Ya sea para la configuración inicial o la operación regular.
+Tanto el módulo como la aplicación son sistemas de software independientes que se ejecutan en dispositivos de arquitecturas distintas. Dado que, por requerimientos del producto, ambos sistemas deben interactuar entre si, es necesario definir las tecnologías, protocolos y definiciones que faciliten la comunicación.
+
+Para la configuración inicial el módulo genera un Access Point Wi-Fi, el teléfono android se conectará a éste generando una LAN IPv4 con solo estos dos dispositivos en conexión punto-a-punto. Utilizando esta red la aplicación enviará las credenciales del router WiFi para su operación regular.
+
+La operación regular del producto requiere que el módulo electrónico y el teléfono con la aplicación estén conectados al mismo router Wi-Fi. De esta manera ambos dispositivos pertenecen a la misma LAN IPv4. El módulo anunciará su presencia en la red para que la aplicación pueda encontrarlo y registre su dirección IP.
+
+Ya sea para la configuración inicial o la operación regular el intercambio de mensajes se realiza utilizando el protocolo HTTP.
 
 \begin{figure}[htbp]
 	\centering
@@ -282,7 +287,7 @@ Como parte del diseño del sistema se eligió el protocolo HTTP para el intercam
 	\label{fig:comunic_mod_app}
 \end{figure}
 
-En una segunda etapa se extenderá el modo de comunicación entre el módulo y la aplicación móvil a través de internet empleando el protocolo MQTT.
+En una segunda etapa se extenderá el modo de comunicación entre el módulo y la aplicación móvil a través de internet empleando el protocolo MQTT. En la figura ~\ref{fig:comunic_mod_app} se puede observar una representación gráfica de los modos de operación soportados por el producto.
 
 \subsection{Protocolos de Comunicación}
 \subsubsection{MDNS DNS-SD}
@@ -321,7 +326,7 @@ En mDNS/DNS-SD, todos los RRs que describen una instancia de servicio se almacen
 	\label{fig:zeroconf_seq}
 \end{figure}
 
-Android ofrece una API para el descubrimiento de dispositvos \emph{Network Service Discovery API} pero ésta no soporta la consulta de registros TXT. Google ofrece también la \emph{Google Nearby API} una librería de similares características pero que es de código cerrado y no proporciona el nivel de granularidad adecuado para este proyecto. Por estos motivos se optó por emplear la librería \emph{RxDNSSD} que hace de wrapper reactivo sobre la implementación de Bonjour.
+Android ofrece una API para el descubrimiento de dispositvos \emph{Network Service Discovery API} pero ésta no soporta la consulta de registros TXT. Google ofrece también la \emph{Google Nearby API} una librería de similares características pero que es de código cerrado y no proporciona el nivel de granularidad adecuado para este proyecto. Por estos motivos se optó por emplear la librería \emph{RxDNSSD} de andriydruk \cite{RxDNSSD} que hace de wrapper reactivo sobre la implementación oficial de Bonjour.
 
 \subsubsection{HTTP y Digest Authentication}
 \emph{El módulo y la aplicación se comunican por defecto utilizando HTTP.}
@@ -329,15 +334,6 @@ Android ofrece una API para el descubrimiento de dispositvos \emph{Network Servi
 El uso normal del producto implica la autenticación y la autorización de los usuarios por parte del módulo. Estas operaciones requieren el envío y la corroboración de las credenciales de usuario. 
 El enfoque más básico \emph{Basic Authentication} realiza el intercambio de las credenciales en texto plano lo que implica un gran riesgo de seguridad.
 Se evaluaron diversas alternativas para securitizar esta tarea y se optó por emplear \emph{Digest Authentication}.
-
-\textbf{Digest Authentication} es un esquema de autenticación (RFC 2617) para comunicaciones HTTP cuyo propósito es proveer un método de autenticación de acceso que evite las fallas más serias de Basic Authentication.
-Este esquema requiere la realización de un intercambio inicial entre el Módulo y la Aplicación para verificar las credenciales. El procedimiento se describe a continuación, un ejemplo detallado se muestra en la figura ~\ref{fig:digest_auth_seq}.
-\begin{enumerate}
-	\item El cliente hace una solicitud con parámetros de autenticación incorrectos o ausentes.
-	\item El Servidor responde con el challenge solicitando que el cliente calcule y envíe el valor  response.
-	\item El cliente genera todos los argumentos necesarios, calcula el valor response y replica la solicitud original con estos datos adjuntos como HEADER.
-	\item El Servidor hace el mismo cálculo y compara su resultado con el recibido del cliente. Si coinciden entonces se autentica al usuario y se procede con la consulta.
-\end{enumerate}
 
 \begin{figure}[htbp]
 	\centering
@@ -347,10 +343,21 @@ Este esquema requiere la realización de un intercambio inicial entre el Módulo
 	\label{fig:digest_auth_seq}
 \end{figure}
 
+\textbf{Digest Authentication} es un esquema de autenticación (RFC 2617) para comunicaciones HTTP cuyo propósito es proveer un método de autenticación de acceso que evite las fallas más serias de Basic Authentication.
+Este esquema requiere la realización de un intercambio inicial entre el servidor y el cliente para verificar las credenciales de usuario. El procedimiento se describe a continuación, un ejemplo detallado se muestra en la figura ~\ref{fig:digest_auth_seq}.
+\begin{enumerate}
+	\item El cliente hace una solicitud con parámetros de autenticación incorrectos o ausentes.
+	\item El Servidor responde con el challenge solicitando que el cliente calcule y envíe el valor  response.
+	\item El cliente genera todos los argumentos necesarios, calcula el valor response y replica la solicitud original con estos datos adjuntos como HEADER.
+	\item El Servidor hace el mismo cálculo y compara su resultado con el recibido del cliente. Si coinciden entonces se autentica al usuario y se procede con la consulta.
+\end{enumerate}
+
+Una vez autenticado, el cliente puede realizar nuevas solicitudes utilizando el mismo \textbf{nonce} del servidor para calcular el valor \textbf{response}. Sin embargo es necesario que el cliente actualice \textbf{cnonce} y el contador \textbf{nc} para prevenir ataques de tipo \emph{replay attack}. 
+
 \subsubsection{MQTT}
 \emph{Uno de los atractivos del producto es la posibilidad de monitorear y accionar módulos de manera remota.}
 
-Para que esto sea posible es necesario que tanto el módulo como la aplicación móvil tengan acceso a internet. Luego de discutir alternativas el equipo decidió que la comunicación por internet se realizará utilizando  MQTT.
+Para que esto sea posible es necesario que tanto el módulo como la aplicación móvil tengan acceso a internet ~\ref{comunic_mod_app}. Luego de discutir alternativas el equipo decidió que la comunicación por internet se realizará utilizando  MQTT.
 
 MQTT es un protocolo de capa de aplicación (RFC 9431) diseñado para el intercambio de mensajes machine-to-machine (M2M) en redes de bajo ancho de banda y alta latencia. Este protocolo de comunicación se construye utilizando la arquitectura publish-suscribe mediante la que proporciona un servicio de colas de mensajes. Su implementación en los clientes es liviana por lo que se puede utilizar en sistemas embebidos de bajos recursos de hardware, razón por la cual es ideal para este proyecto.
 
@@ -374,6 +381,92 @@ Los pormenores de la adaptación de este protocolo a los requerimientos del proy
 
 
 \subsection{RPC API}
+Como se expuso al inicio de la sección ~\ref{section:interfaces} el módulo y la aplicación deben interactuar entre sí empleando diversos protocolos de comunicación.
+Si bien se detallaron los medios y los procedimientos, aún falta definir el formato de los mensajes que intercambiarán para garantizar la ejecución de las funcionalidades.
+
+Con este propósito se analizaron diversas alternativas utilizadas en la industria y se optó por especificar una API RPC.
+
+\textbf{RPC} (Remote Procedure Call) o ejecución de procedimientos remotos es un protocolo de mensajes (RFC 1057, 5531) que permite a un sistema cliente ejecutar funciones en otro sistema servidor de manera transparente. 
+\emph{El cliente llama al procedimiento como si fuera local y la implementación RPC subyacente se encarga de los detalles de comunicación.}
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Figures/design/SEQ_rpc_ink.png}
+	\rule{35em}{1pt}
+	\caption[Connection Diagram]{Secuencia de ejecución de un procedimiento remoto.}
+	\label{fig:seq_rpc}
+\end{figure}
+
+El protocolo implementa el patron Request-Response que se compone de ``stubs'' o ``pasamanos'' de los procedimientos tanto en el cliente como en el servidor. Estos stubs son funciones que no ejecutan la lógica del procedimiento sino que se encargan de: construir estructuras de datos para solicitudes y respuestas, convertir estos objetos de memoria en otros con formatos de red, y los pormenores de su transmisión.
+
+
+Elementos de una Solicitud (Request):
+\begin{itemize}
+	\item Identificador del programa
+	\item Número del procedimiento
+	\item Argumentos
+\end{itemize}
+
+Elementos de una Respuesta (Response):
+\begin{itemize}
+	\item Resultado o valore de retorno.
+	\item Información de estado (Ejecución Exitosa, Error).
+\end{itemize}
+
+Por legibilidad y estandarización, solicitudes y respuestas tendrán formato JSON. En la figura ~\ref{fig:seq_rpc} se muestra un ejemplo de RPC.
+
+\begin{multicols}{3} % Change 3 to desired number of columns
+	
+	% Your content for column 1
+	El formato definitivo para Solicitudes:
+	\begin{lstlisting}
+{
+  "id": 103,
+  "method": "method_name",
+  "params":{
+    "un_parametro": ...,
+    "otro_parametro": ...,
+    ...
+  }
+}
+	\end{lstlisting}
+	
+	\columnbreak % Insert a column break between columns
+	
+	% Your content for column 2
+	El formato definitivo para Respuestas exitosas:
+	\begin{lstlisting}
+{
+  "id": 103,
+  "result":{
+    "un_resultado": ...,
+    "otro_resultado": ...,
+    ...
+  }
+}
+	
+	\end{lstlisting}
+	
+	\columnbreak % Insert a column break between columns
+	
+	% Your content for column 3
+	El formato definitivo para Respuestas con error:
+	\begin{lstlisting}
+{
+  "id": 103,
+  "error":{
+    "code": 404,
+    "message": "... no existe",
+    ...
+  }
+}
+	
+	\end{lstlisting}
+	
+\end{multicols}
+En una de las labores más tediosas del diseño se revisaron los casos de uso y a partir de ellos se definieron 17 procedimientos que la aplicación podrá utilizar para ejecutar en un módulo. La especificación completa se puede consultar en la tabla ~\ref{tab:rpc_api}.
+La invocación de los procedimientos se realizará enviando consultas HTTP siempre utilizando el método POST.
+
 \begin{sidewaystable}[!htbp] 
 	\scriptsize
 	\rowcolors*{1}{black!10}{}
@@ -440,4 +533,67 @@ Los pormenores de la adaptación de este protocolo a los requerimientos del proy
 		& /update/commit       &   \multicolumn{4}{|l|}{\scriptsize{\textbf{Se confirma la correcta actualización ejecutando el RPC OTA.Commit con un POST para evitar el rollback por timeout.}} }     \\ \hline
 	\end{tabularx}
 	\caption{Protocolos remotos proporcionados por el firmware del modulo}
+	\label{tab:rpc_api}
 \end{sidewaystable}
+
+\section{Estructura del Proyecto}
+\subsection{Unidades Funcionales}
+Se realizó un análisis de experiencia de usuario en el que se definieron las pantallas que se implementaran en la aplicación móvil. En la figura ~\ref{fig:app_flow} se puede observar las vistas y las conexiones entre ellas.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Figures/design/user_flow_ink.png}
+	\rule{35em}{1pt}
+	\caption[Connection Diagram]{Diagrama de flujo de usuario para la aplicación móvil.}
+	\label{fig:app_flow}
+\end{figure}
+
+Se plantea la definición de unidades funcionales como un conjunto de funcionalidades de la aplicación que están estrechamente relacionadas.
+Utilizar las pantallas pareciera una buena estrategia para definir estas unidades. 
+
+\begin{itemize}
+	\item \textbf{Creación de Usuario:} El usuario ingresa su número de teléfono y se crea el objeto App User.
+	\item \textbf{Listado de Módulos:} Se buscan todos los Módulos disponibles en los distintos canales de comunicación y se muestran en una lista para permitir su manipulación.
+	\item \textbf{Configuración del Módulo:} Permite modificar parámetros del módulo seleccionado.
+	\item \textbf{Usuarios del Módulo:} Muestra el listado de usuarios de un Módulo y permite su administración.
+\end{itemize}
+
+\subsubsection{Plantillas de Arquitectura}
+Siguiendo los lineamientos de la arquitectura cada unidad respetará el formato arquitectónico ilustrado en la figura ~\ref{fig:class_unidad}, como puede observarse todos los patrones de diseño están represados en el diagrama de clases. 
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=\textwidth]{Figures/design/CLASS_unit_ink.png}
+	\rule{35em}{1pt}
+	\caption[Connection Diagram]{Diagrama de clases de una unidad funcional.}
+	\label{fig:class_unidad}
+\end{figure}
+
+Al implementar esta plantilla se observa también que la organización del código fuente produce una jerarquía de directorios similar para cada unidad funcional. En la figura ~\ref{fig:dir_unit} se puede observar cómo debería verse cada unidad en el proyecto.
+
+
+\begin{multicols}{2}
+\begin{Figure}%[htbp]
+	\centering
+	\includegraphics[width=0.8\linewidth]{Figures/design/DIR_generic_unit.png}
+	\rule{\linewidth}{1pt}
+	\captionof{figure}{Diagrama de clases de una unidad funcional.}
+	\label{fig:dir_unit}
+\end{Figure}
+
+\columnbreak % Insert a column break between columns
+Un directorio con el nombre de la unidad funcional encapsula los archivos exclusivos de la unidad entre ellos:
+
+Los archivos que implementan la Vista y el Presentador.
+
+En el directorio \texttt{data} se colocan los archivos relacionados con la implementación de los repositorios.
+
+En el directorio \texttt{dominio} estarán los archivos que implementan los casos de uso.
+	
+\end{multicols}
+
+
+ 
+\subsection{Planificación de las Iteraciones}
+
+Dado que la aplicación encapsula la lógica de negocios 
+
