@@ -595,5 +595,50 @@ En el directorio \texttt{dominio} estarán los archivos que implementan los caso
  
 \subsection{Planificación de las Iteraciones}
 
-Dado que la aplicación encapsula la lógica de negocios 
+Para garantizar un prototipo mínimo y plantear las subsecuentes mejoras se proponen tres iteraciones de desarrollo acotadas, consecutivas e incrementales. Con este propósito se definieron tres subconjuntos ~\ref{fig:casosusoiter} sobre los casos de uso documentados en la sección ~\ref{section:casosdeuso}. Para cada iteración se codificará todo el andamiaje necesario para construir las unidades funcionales con las primitivas de la arquitectura, los repositorios con sus canales correspondientes, el diseño gráfico de las vistas y los algoritmos de los casos de uso.
+\pagebreak
+\begin{multicols}{2}
+	\begin{Figure}%[htbp]
+		\centering
+		\includegraphics[width=\linewidth]{Figures/design/USE_todos_iterac.png}
+		\rule{\linewidth}{1pt}
+		\captionof{figure}{Subconjuntos de Casos de Uso para cadad Iteración.}
+		\label{fig:casosusoiter}
+	\end{Figure}
+	
+	\columnbreak
+	Se describe una síntesis del alcance de cada iteración:
+	{ \small
+	
+	\emph{ITERACIÓN I} 
+	\begin{itemize}
+		\item Se plantea y comenta la implementación reactiva y genérica de un Caso de Uso. Se expondrá sobre el uso y funcionamiento de los Schedulers.
+		\item Casos de Uso contemplados para la primera iteración.
+		\item El repositorio de los objetos Módulo. Canales de Persistencia local y Comunicación LAN.
+	\end{itemize}
+	
+	
+	\emph{ITERACIÓN II}
+	\begin{itemize}
+		\item Casos de uso contemplados para la segunda iteración.
+		\item El repositorio para obtener la ubicación geográfica del teléfono.
+		\item Se introducen las pruebas unitarias al código base.
+		\item Se configuran, codifican y ejecutan pruebas funcionales automáticas.
+	\end{itemize}
+
+	\emph{ITERACIÓN III}
+	\begin{itemize}
+		\item Motivación e implementación del ``Control Rápido''.
+		\item Casos de uso contemplados para la tercera iteración.
+		\item Se documenta la propuesta de comunicación a través de internet.
+		\item Wrapper reactivo sobre una librería de terceros.
+		\item La lógica de selección de canales disponibles para un mismo repositorio.
+		\item Seguridad sobre el canal MQTT.	
+	\end{itemize}
+	}
+\end{multicols}
+
+
+
+
 
