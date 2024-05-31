@@ -4,7 +4,7 @@
 
 \label{Chapter5} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
 
-\lhead{Capítulo  4. \emph{Diseño}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
+\steveCabecera{Capítulo  4. \emph{Diseño}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
 Este capitulo se dedica a explorar los aspectos más relevantes relacionados con el diseño de la solución.
 
 En primera instancia se plantea la necesidad de elegir y emplear un patrón de arquitectura de software 
@@ -101,9 +101,9 @@ Cada capa tiene una responsabilidad bien definida y se comunica con una única c
 La cadena de comunicación puede apreciarse en la figura ~\ref{fig:Diagrama_clasico2}. La capa de presentación transmite las acciones del usuario a la capa de dominio, la cual efectúa solicitudes de información a la capa de datos. Una vez resueltas, la capa de datos enviará los resultados de vuelta a la capa de dominio que ejecutará la lógica de negocios correspondiente. Esto genera una respuesta que, a su vez, produce los efectos deseados en la capa de presentación.\\
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=0.3\textwidth]{Figures/-006.png}
+	\includegraphics[width=0.3\textwidth]{Figures/design/FLOW_clean.png}
 	\rule{35em}{1pt}
-	\caption[Dependencia de Módulos]{Esquema de dependencias para una arquitectura en capas.}
+	\caption[Dependencia de Módulos]{Diagrama de Flujo de Información entre las capas de la arquitectura..}
 	\label{fig:Diagrama_clasico2}
 \end{figure}
 A continuación se describe brevemente las responsabilidades de cada capa.
@@ -570,9 +570,10 @@ Siguiendo los lineamientos de la arquitectura cada unidad respetará el formato 
 
 Al implementar esta plantilla se observa también que la organización del código fuente produce una jerarquía de directorios similar para cada unidad funcional. En la figura ~\ref{fig:dir_unit} se puede observar cómo debería verse cada unidad en el proyecto.
 
+\pagebreak
 
 \begin{multicols}{2}
-\begin{Figure}%[htbp]
+\begin{Figure}%[b]
 	\centering
 	\includegraphics[width=0.8\linewidth]{Figures/design/DIR_generic_unit.png}
 	\rule{\linewidth}{1pt}
