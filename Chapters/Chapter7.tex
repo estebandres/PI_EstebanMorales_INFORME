@@ -13,7 +13,7 @@
 En este capítulo se documentan aspectos relevantes relacionados con la codificación que se realizó en la segunda iteración de desarrollo del software.\\
 Se explicaran los Casos de Uso más interesantes de los contemplados para esta iteración.
 Se comentará sobre el repositorio de locaciones con el que se obtendrá la información de ubicación del teléfono.
-Finalmente se introducirá la metodología, conceptos y herramientas utilizadas para realizar las pruebas unitarias y funcionales.
+Finalmente se introducirá la metodología, conceptos y herramientas utilizadas para realizar las pruebas unitarias y pruebas de interfaz de usuario.
 
 \section{Casos de Uso Implementados}
 Para la presente iteración se implementaron los siguientes casos de uso.
@@ -60,7 +60,7 @@ En el diagrama de la figura ~\ref{fig:act_geoloc} se puede observar el flujo del
 
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=0.8\textwidth]{Figures/iter2/ACT_geoloc.png}
+	\includegraphics[width=0.7\textwidth]{Figures/iter2/ACT_geoloc.png}
 	\rule{35em}{1pt}
 	\caption[Class Diagram]{Diagrama de actividades de la implementación del caso de uso: Obtener Geolocalización.}
 	\label{fig:act_act_geoloc}
@@ -79,7 +79,7 @@ En el diagrama de la figura ~\ref{fig:act_deleteUser} se puede observar el flujo
 
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=0.8\textwidth]{Figures/iter2/ACT_deleteUser.png}
+	\includegraphics[width=0.7\textwidth]{Figures/iter2/ACT_deleteUser.png}
 	\rule{35em}{1pt}
 	\caption[Class Diagram]{Diagrama de actividades de la implementación del caso de uso: Eliminar Usuario.}
 	\label{fig:act_act_deleteUser}
@@ -99,7 +99,7 @@ Existen diversos tipos de dobles de prueba caracterizados cada uno por el propó
 	\item \textbf{Fake}: Re-Implementación funcional exclusiva de un objeto dependencia empleado por uno o todos los casos de prueba de un SUT. Se utiliza cuando el entorno de pruebas presenta limitaciones o restricciones que hacen necesaria una implementación reducida, simplificada o especializada de dicha dependencia. 
 \end{itemize}
 
-Teniendo en cuenta estas definiciones un Mock es un Stub, un Spy y un Dummy. 
+Teniendo en cuenta estas definiciones un Mock es un Stub, es un Spy y es un Dummy. 
 Sin embargo un objeto Fake no tiene relación con los otros tipos ya que es una implementación independiente y funcional por si misma que será utilizada solo en el entorno de pruebas para ejecutar los casos de prueba.
 
 Los casos de pruebas unitarias para la aplicación móvil se implementaron utilizando el framework \texttt{JUnit} y la librería \texttt{Mockito} que permite la creación de dobles de prueba de una manera simplificada facilitando su codificación.\\
@@ -121,8 +121,28 @@ Entonces el nombre de la prueba tendrá el siguiente formato:\\
 \subsection{Metodología}
 Para asegurar la total cobertura de los casos de prueba para las clases y métodos más relevantes se dibujaron los diagramas de actividades correspondientes y se identificaron las ramas condicionales que definen los escenarios de ejecución. Se determina así la complejidad ciclomática y con ello el número total de casos de prueba necesarios para cubrir todos los escenarios.
 
-En la figura ~\ref{} se muestra el diagrama de actividades para el caso de uso se indican las ramas con las líneas numeradas. Para cada línea se codificará un caso de prueba.
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Figures/iter2/ACT_factoryResetModule_branches_ink.png}
+	\rule{35em}{1pt}
+	\caption[Class Diagram]{Ramas de ejecución dibujadas sobre el diagrama de actividades de la implementación del caso de uso: Reinicio a Valores de Fábrica.}
+	\label{fig:act_act_test_branches}
+\end{figure}
+
+En la figura ~\ref{fig:act_act_test_branches} se indican las ramas con líneas sobre el diagrama de actividades para un caso de uso. Para cada una de estas líneas se codificará un caso de prueba.
 
 \subsection{Pruebas Unitarias}
-Teniendo en cuenta la criticidad de los algoritmos implementados para la capa de datos y la lógica de negocios en los casos de uso o capa de dominio. Se escribieron pruebas unitarias para ambas capas. En la figura ~\ref{} se muestra el reporte de ejecución de los casos de prueba. Sobre un total de Se consiguió la ejecución exitosa del total de  
-\subsection{Pruebas de Funcionales}
+Teniendo en cuenta la criticidad de los algoritmos implementados para la capa de datos y la lógica de negocios en la capa de dominio. Se escribieron pruebas unitarias para ambas capas. En la figura %~\ref{} se muestra el reporte de ejecución de los casos de prueba. Sobre un total de Se consiguió la ejecución exitosa del total de  
+
+\subsection{Pruebas de Interfaz de Usuario}
+Este tipo de prueba conocidas como ``UI Tests'' se ofrece como parte del framework Espresso de pruebas instrumentadas para android y que viene soportado por defecto por la plataforma de desarrollo. Permiten ejecutar casos de prueba sobre la aplicación real ejecutada sobre un dispositivo real sobre el cual se simulan las interacciones del usuario con la interfaz gráfica, es decir se emulan los efectos de los gestos humanos sobre la pantalla de un teléfono.
+Para ello es necesario que el dispositivo en cuestión, el teléfono, esté conectado por cable USB a la computadora del desarrollador. Cuando se ejecutan las pruebas se procede con una instalación nueva de la aplicación en el dispositivo, se abre dicha aplicación y finalmente se ejecutan los casos de prueba programados usando Espresso.
+
+Para el presente proyecto se codificaron, como demostración conceptual, solo unos casos de prueba para la pantalla principal de la aplicación, el listado de módulos. El esfuerzo se realizó con el ánimo de dejar una base sólida para mejorar el nivel de validación del desarrollo del software.\\
+La puesta a punto de las dependencias y la configuración de los parámetros para conseguir ejecutar este tipo de pruebas de manera correcta se convirtió en un desafío que tomó semanas en ser resuelto mayormente debido a que se utilizó inyección de dependencias en todo el proyecto empleando Dagger.\\
+%Todos los casos se ejecutaron de manera exitosa y el reporte se puede observar en la figura ~\ref{}.
+Como una nota relevante para el lector que desee ejecutar las pruebas sobre un dispositivo android se le recomienda enfáticamente desactivar las animaciones en las configuraciones avanzadas de programador en dicho dispositivo.
+
+
+
+
