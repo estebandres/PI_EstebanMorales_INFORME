@@ -207,6 +207,7 @@ Siguiendo los lineamientos de la arquitectura propuesta los autores denominan a 
 Como una nota relevante de implementación se recomienda ejecutar las rutinas de los comandos en un hilo/proceso separado para evitar bloquear el proceso principal de la aplicación.
 
 \subsection{Capa de Datos: Patrón Repository}
+\label{section:repository}
 En la capa de datos se propone la implementación de un patrón de diseño conocido como Repository(Repositorio). 
 Originalmente se concibe a este diseño como una forma de estandarizar la implementación y el uso de los objetos DAO (Data Access Object) comúnmente utilizados para mapear objetos entidad con las persistencias en la base de datos \cite{repo_wolf}.
 Adicionalmente este patrón encapsula en la clase repositorio todos los métodos particulares de filtrado, procesamiento calculado y ordenamiento de entidades.
@@ -329,6 +330,7 @@ En mDNS/DNS-SD, todos los RRs que describen una instancia de servicio se almacen
 Android ofrece una API para el descubrimiento de dispositvos \emph{Network Service Discovery API} pero ésta no soporta la consulta de registros TXT. Google ofrece también la \emph{Google Nearby API} una librería de similares características pero que es de código cerrado y no proporciona el nivel de granularidad adecuado para este proyecto. Por estos motivos se optó por emplear la librería \emph{RxDNSSD} de andriydruk \cite{RxDNSSD} que hace de wrapper reactivo sobre la implementación oficial de Bonjour.
 
 \subsubsection{HTTP y Digest Authentication}
+\label{section:digest}
 \emph{El módulo y la aplicación se comunican por defecto utilizando HTTP.}
  
 El uso normal del producto implica la autenticación y la autorización de los usuarios por parte del módulo. Estas operaciones requieren el envío y la corroboración de las credenciales de usuario. 
