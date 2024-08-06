@@ -32,28 +32,149 @@ disponibles para este tipo de accionamiento a aquellos que se encuentren dentro 
 	\centering
 	\includegraphics[width=0.4\textwidth]{Figures/iter3/module_notif.png}
 	\rule{35em}{1pt}
-	\caption[Wireframe]{Esquema de diseño de la notificación permanente para el control rápido. (1) Boton para buscar los módulos disponibles, (2) Boton para rotar el módulo seleccionado, (3) Botón para habilitar el accionamiento, (4) Botón para accionar el módulo seleccionado.}
+	\caption[Wireframe]{Maqueta de diseño de la notificación permanente para el control rápido. (1) Botón para buscar los módulos disponibles, (2) Botón para rotar el módulo seleccionado, (3) Botón para habilitar el accionamiento, (4) Botón para accionar el módulo seleccionado.}
 	\label{fig:notif_design}
 \end{figure}
 
 \section{Canal de comunicación por Internet}
 Uno de los aspectos más sobresalientes de la propuesta de valor del producto es la posibilidad
 de monitorear, configurar y accionar el módulo de manera remota a través de internet.
-El modo de conexión completo se puede observar en la figura ~\ref{lebxx} 
+En la figura ~\ref{fig:comunic_mod_app} se muestra el esquema de conexión para el modo de operación por internet.
 \subsection{Adaptación del protocolo MQTT}
-Como se mencionó en la sección ~\ref{section:xxx} el protocolo MQTT implementa el patrón de arquitectura Publish-Subscribe
-sin embargo está claro que la ejecución de protocolos RPC necesita de un canal de comunicación que admita  Request-Response...
-Esta controversia se resuelve del lado de la aplicación ofreciendo una adaptación sobre el protocolo MQTT.
-Es decir, la suscripción a los tópicos, el envío de mensajes y el formato de los mismos se realizará de manera tal que el modo de comunicación entre aplicación y módulos Request-Response.
-\subsubsection{Formato del Mensaje}
+Como se mencionó en la sección ~\ref{section:mqtt} el protocolo MQTT implementa el patrón de arquitectura Publish-Subscribe .
+Sin embargo por definición ~\ref{section:rpc} el protocolo RPC depende de la implementación del patrón Request-Response entre cliente y servidor. 
+%sin embargo está claro que la ejecución de protocolos RPC necesita de un canal de comunicación que admita  Request-Response...
 
-\subsubsection{Esquema de Suscripciones}
+Esta controversia se resuelve del lado de la aplicación ofreciendo una adaptación sobre el protocolo MQTT.
+Es decir, la suscripción a los tópicos, el envío de mensajes y el formato de los mismos se realizará de manera tal que el modo de comunicación entre aplicación y módulos permita la correcta ejecución de los RPC.
+
+\subsubsection{Formato del Mensaje}
+Los mensajes se envían en el payload del paquete MQTT y conservan los formatos descritos para las solicitudes y respuestas descritas en la sección ~\ref{section:rpc} pero para admitir la adaptación necesaria se agregan tres campos extra a saber:
+\begin{itemize}
+	\item Requester: Es el identificador único del usuario que intenta ejecutar el RPC. Será utilizado por el módulo para autorizar la operación y no se incluye en la respuesta.
+	\item Tag: Es la concatenación de los identificadores del módulo y el usuario ejecutor. Este campo se copia sin alterar en la respuesta. Permite a la aplicación identificar el origen de la respuesta.
+	\item Id: Es el identificador único del mensaje. Es un número aleatorio que genera la aplicación para cada mensaje con el propósito de detectar duplicados.
+\end{itemize}
+
+\begin{multicols}{3} % Change 3 to desired number of columns
+	
+	% Your content for column 1
+	{\small Solicitudes por MQTT:}
+	\begin{lstlisting}
+{
+  "id": 103,
+  "method": "method_name",
+  "params":{
+  "un_parametro": ...,
+  "otro_parametro": ...,
+  ...
+  }
+
+  "requester": 3514123456,
+  "tag": "urbit_777::3514123456",
+  "id": 2356897
+}
+	\end{lstlisting}
+	
+	\columnbreak % Insert a column break between columns
+	
+	% Your content for column 2
+	{\small Respuestas exitosas por MQTT:}
+	\begin{lstlisting}
+{
+  "id": 103,
+  "result":{
+  "un_resultado": ...,
+  "otro_resultado": ...,
+  ...
+  }
+  "tag": "urbit_777::3514123456",
+  "id": 2356897
+}
+	
+	\end{lstlisting}
+	
+	\columnbreak % Insert a column break between columns
+	
+	% Your content for column 3
+	{\small Respuestas con error por MQTT:}
+	\begin{lstlisting}
+{
+  "id": 103,
+  "error":{
+  "code": 404,
+  "message": "... no existe",
+  ...
+  }
+  "tag": "urbit_777::3514123456",
+  "id": 2356897
+}
+	
+	\end{lstlisting}
+	
+\end{multicols}
+
+\subsubsection{Tópicos y Suscripciones}
+\textbf{EJECUCIÓN RPC}
+
+Todos los módulos conectados al Broker MQTT estarán suscritos a un único tópico con el siguiente formato:
+\textbf{\texttt{urbit-??????/request}}\\
+Los signos de interrogación corresponden al UID de cada módulo. En este tópico recibirá las solicitudes de ejecución de RPC.
+
+Al mismo tiempo publicarán las respuestas a los tópicos generados para cada usuario que respetan el siguiente formato:\\
+\textbf{\texttt{urbit-??????/response/XXXXXXXXXX}}\\
+Los signos de interrogación corresponden al UID de cada módulo y las equis al UID del usuario. En este tópico se publican las respuestas a las solicitudes de ejecución de RPC.
+
+Los módulos publicarán los cambios en el estado de apertura a el tópico con el siguiente formato.
+\textbf{\texttt{urbit-??????/status}}\\
+
+\textbf{INVITACIONES}
+
+Cuando un administrador crea un usuario a partir de su número telefónico en la pantalla de gestión de usuarios. El módulo publica su propio identificador como mensaje retenido en un tópico especial que permite que el usuario invitado pueda encontrar de manera remota este nuevo módulo al que se le a cedido acceso.
+Estos tópicos de invitaciones respetan el siguiente formato:\\
+\textbf{\texttt{XXXXXXXXXX/invitation/urbit-??????}}\\
+Donde las equis corresponden al identificador del usuario invitado y los signos de interrogación al identificador del módulo.
+
+Dado que un usuario puede ser invitado a operar diversos módulos resulta sumamente útil emplear los ``wildcards'' admitidos por MQTT para nombres de tópicos y que permiten suscripciones múltiples. La aplicación cliente se suscribe a un tópico con el siguiente formato:
+\textbf{\texttt{XXXXXXXXXX/invitation/+}}\\
+Donde las equis corresponden al identificador del usuario y el signo de suma es el comodín que habilitará la recepción de invitaciones de cualquier módulo.
 
 \subsection{RPC sobre MQTT}
+Al momento de ejecutar un RPC la aplicación cliente genera el mensaje con el formato indicado anteriormente y lo publica al tópico de solicitudes del módulo. El módulo al recibirlo realizará la tarea de autorización, ejecutará el procedimiento correspondiente y publicará el resultado en el tópico de respuestas.
+En la figura ~\ref{fig:act_publish_rpc} se muestra el procedimiento completo de envío de la solicitud de ejecución y la resepción de la respuesta.
+El algoritmo puede fallar en 3 escenarios a saber:
+\begin{itemize}
+	\item Error de conexión al Broker.
+	\item Error al momento de Publicar el mensaje.
+	\item El timeout fijado para la operación fue excedido sin registrar respuestas.
+\end{itemize}
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.9\textwidth]{Figures/iter3/ACT_publishRPC_ink.png}
+	\rule{35em}{1pt}
+	\caption[UML Diagram]{Diagrama de actividades del procedimiento de envío de una solicitud y recepción de la respuesta al momento de ejecutar un RPC.}
+	\label{fig:act_publish_rpc}
+\end{figure}
+
+Existe un escenario que produce une excepción pero que no representa un fallo de la rutina sino que se genera a propósito como un mapeo de la respuesta de operación no exitosa enviada por el módulo y así conservar la compatibilidad con los casos de uso ya implementados.
+
 
 \subsection{Selector de Canales}
-
+Al introducir un nuevo canal de datos por el cual se pueden ejecutar los procedimientos remotos se hizo necesario incorporar una rutina que decida cuál es el canal apropiado para realizar la operación conforme a las condiciones de conexión del teléfono.
 \subsubsection{Ejecutor}
+Para resolver la tarea y teniendo en cuenta la similaridad de todos los métodos asociados a la ejecución de RPC, se optó por codificar una clase interna al repositorio denominada \texttt{RPCExecutor}. Esta clase se implementó utilizando tipos genéricos de Java ya que cada RPC utiliza objetos solicitud y respuesta de tipos únicos. \texttt{RPCExecutor} permite generalizar el modo de ejecución de los RPC de manera que el codigo en cada uno es equivalente.
+Se declara un método de nombre \texttt{executeRPC} que hace uso del ejecutor para decidir la fuentes de datos primaria, con la que intentará ejecutar el procedimiento en caso de fallar intentará con la segunda si es que está disponible.
+El orden de prioridad de estas fuentes de datos se determina en un método aparte denominado getDataSourceChoices. En la figura ~\ref{fig:act_choices} se muestra el algoritmo utilizado. El estado de conexión de teléfono se obtiene usando las APIs provista por el SDK de android.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.9\textwidth]{Figures/iter3/ACT_choice_ink.png}
+	\rule{35em}{1pt}
+	\caption[UML Diagram]{Diagrama de actividades del procedimiento que determina el orden de prioridad de las fuentes de datos para la ejecucuín de RPC.}
+	\label{fig:act_choices}
+\end{figure}
+
 
 
 \section{Casos de Uso Implementados}

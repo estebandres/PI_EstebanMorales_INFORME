@@ -357,6 +357,7 @@ Este esquema requiere la realización de un intercambio inicial entre el servido
 Una vez autenticado, el cliente puede realizar nuevas solicitudes utilizando el mismo \textbf{nonce} del servidor para calcular el valor \textbf{response}. Sin embargo es necesario que el cliente actualice \textbf{cnonce} y el contador \textbf{nc} para prevenir ataques de tipo \emph{replay attack}. 
 
 \subsubsection{MQTT}
+\label{section:mqtt}
 \emph{Uno de los atractivos del producto es la posibilidad de monitorear y accionar módulos de manera remota.}
 
 Para que esto sea posible es necesario que tanto el módulo como la aplicación móvil tengan acceso a internet ~\ref{comunic_mod_app}. Luego de discutir alternativas el equipo decidió que la comunicación por internet se realizará utilizando  MQTT.
@@ -383,6 +384,7 @@ Los pormenores de la adaptación de este protocolo a los requerimientos del proy
 
 
 \subsection{RPC API}
+\label{section:rpc}
 Como se expuso al inicio de la sección ~\ref{section:interfaces} el módulo y la aplicación deben interactuar entre sí empleando diversos protocolos de comunicación.
 Si bien se detallaron los medios y los procedimientos, aún falta definir el formato de los mensajes que intercambiarán para garantizar la ejecución de las funcionalidades.
 
@@ -399,7 +401,7 @@ Con este propósito se analizaron diversas alternativas utilizadas en la industr
 	\label{fig:seq_rpc}
 \end{figure}
 
-El protocolo implementa el patron Request-Response que se compone de ``stubs'' o ``pasamanos'' de los procedimientos tanto en el cliente como en el servidor. Estos stubs son funciones que no ejecutan la lógica del procedimiento sino que se encargan de: construir estructuras de datos para solicitudes y respuestas, convertir estos objetos de memoria en otros con formatos de red, y los pormenores de su transmisión.
+El protocolo implementa el patrón Request-Response que se compone de ``stubs'' o ``pasamanos'' de los procedimientos tanto en el cliente como en el servidor. Estos stubs son funciones que no ejecutan la lógica del procedimiento sino que se encargan de: construir estructuras de datos para solicitudes y respuestas, convertir estos objetos de memoria en otros con formatos de red, y los pormenores de su transmisión.
 
 
 Elementos de una Solicitud (Request):
