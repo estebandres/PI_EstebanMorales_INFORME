@@ -70,6 +70,11 @@
 \hypersetup{urlcolor=black, colorlinks=true} % Colors hyperlinks in blue - change to black if annoying
 	\title{\ttitle} % Defines the thesis title - don't touch this
 
+%Solves the issue with the list of figures where numbers overlap with caption text.
+\makeatletter
+\renewcommand*\l@figure{\@dottedtocline{1}{1em}{3.2em}}
+\makeatother
+
 \begin{document}
 
 \frontmatter % Use roman page numbering style (i, ii, iii, iv...) for the pre-content pages
@@ -140,6 +145,13 @@
 %----------------------------------------------------------------------------------------
 %	ABSTRACT PAGE
 %----------------------------------------------------------------------------------------
+\dedicatory{
+	A mi padre por las armas,\\
+	a mi madre por las flores,\\
+	a mi tía por las ciencias,\\
+	y a mis hermanos por todo lo demás.
+}
+
 \newpage
 
 %----------------------------------------------------------------------------------------
@@ -173,6 +185,7 @@
 %\textbf{KDS} & \textbf{K}inetis \textbf{D}esign \textbf{S}tudio \\
 %%\textbf{Acronym} & \textbf{W}hat (it) \textbf{S}tands \textbf{F}or \\
 %}
+
 
 
 %----------------------------------------------------------------------------------------

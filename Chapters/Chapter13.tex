@@ -4,19 +4,39 @@
 
 \label{Chapter13} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
 
-\lhead{Capítulo 13. \emph{Conclusiones y Trabajos Futuros}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
+\steveCabecera{Capítulo 13. \emph{Conclusiones y Trabajos Futuros}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
 
 %----------------------------------------------------------------------------------------
 %	SECTION 1
 %----------------------------------------------------------------------------------------
 \section{Conclusión}
-Durante el desarrollo de la presente práctica se entendieron las ventajas de implementar un sistema de software utilizando un patrón de arquitectura. La inspección de código escrito por profesionales del área introdujo conceptos de programación Java avanzados tales como el uso de clases anónimas \cite{anon_pankaj} y la implementación de clases y métodos genéricos\cite{gen_caules}. Se pudieron observar las técnicas empleadas para realizar las pruebas sobre el código implementado y fue necesario invertir tiempo en la investigación de las librerías y framework para pruebas (UnitTest, Integration Tests) tales como Mockito \cite{mockito_lars} (creación de objetos mock(maquetas), stubs(comportamiento forzado) y spies (espías))y Espress \cite{espress_maksim} (Simulación e interacción con objetos del framework android).\\
-Luego de estudiar las implementaciones se fueron evidenciando los beneficios de aplicar una arquitectura de estas características. La modularización en componentes con responsabilidades reducidas y bien definidas permite seguir el flujo de ejecución del código con facilidad y como consecuencia directa el rastreo de bugs reduce el radio de ubicación del código involucrado a unas pocas líneas en muy poco tiempo.
-Dado que la lógica de negocios está encapsulada en la capa de dominio, su ejecución es completamente independiente de los componentes del framework ofreciendo la posibilidad de exportar/traducir la lógica a otros lenguajes, frameworks y sistemas operativos.
-Tanto los presentadores como las vistas tienen contratos que deberían respetarse en cualquier plataforma por lo que el planteo inicial de la capa de presentación permite el desarrollo en paralelo de implementaciones nativas.
-El uso de una abstracción de repositorios en la capa de datos permite la inclusión de diversos orígenes de datos o canales que ofrecen mayor flexibilidad al momento de establecer los niveles de redundancia soportados y los esquemas de actualización disponibles. 
-En una buena implementación, la organización del código en directorios y paquetes debería facilitar la identificación de los componentes de arquitectura y la discriminación de funcionalidades.   
-De manera indirecta se observó que la implementación introduce un procedimiento de trabajo repetitivo tanto para la adición de nuevas funcionalidades como para la remoción de errores y la inspección del código en general.\\
-Como una desventaja notoria se menciona la empinada curva de aprendizaje para la inclusión de nuevos miembros en un hipotético equipo de desarrollo. Así mismo se hizo evidente que todos los conceptos de abstracción que fueron introducidos se traducen en un aumento notable en la cantidad de lineas de código meramente dedicadas a mantener la estructura del diseño pero que no proveen una funcionalidad concreta al sistema.\\
-Finalmente, se observaron inconsistencias entre el planteo teórico de la arquitectura y la implementación real del software mayormente por la dificultad técnica y concesiones que se tuvieron en cuenta para disminuir la verbosidad de algunos componentes o interacciones (e.g. la violación de la regla de dependencias en los casos de uso).
+Al finalizar el proyecto se obtuvo una aplicación android que implementa los casos de uso documentados y cumple con los requerimientos del producto. 
+La realización de este proyecto en particular implicó un amplio conocimiento sobre los diversos protocolos y estándares de comunicación involucrados en su funcionamiento.
+ 
+Durante el desarrollo se hizo evidente la pronunciada curva de aprendizaje asociada con la implementación de Clean Architecture sobre una aplicación android en Java. Encima de esta complejidad la incorporación del paradigma reactivo utilizando RxJava lo hizo aún más cuesta arriba.
+Afortunadamente todas las dificultades fueron sorteadas y el desarrollo se completó con éxito.
+
+En cuanto al empleo del patrón de arquitectura se identificaron algunas desventajas y ventajas.
+Las reglas establecidas introducen una rigidez en la codificación que parece contradecir el principio KISS de la programación. Esta situación puede llevar a al empleo de workarounds que no siempre son óptimos y que podrían resultar en errores. Al mismo tiempo la cantidad de código de andamiaje hace que la navegación por los archivos del proyecto no sea obvia.\\
+Sin embargo, una vez familiarizado con la estructura del proyecto, las adición de funcionalidades y las modificaciones en general se convierten en un proceso sistemático y repetitivo al estilo de una receta de cocina. La división de responsabilidades definidas facilita enormemente la inspección del código y las tareas de debugging.
+
+Definitivamente, el uso de este patrón de arquitectura se justifica cuando es necesario coordinar el trabajo con muchos integrantes en proyectos de una mayor envergadura.
+
+Como parte del desarrollo se escribieron pruebas unitarias y de interfaz gráfica. Esto requirió familiaridad con conceptos como los dobles de prueba y su codificación utilizando los frameworks disponibles. Al momento de concluir con el proyecto la cobertura de las pruebas unitarias alcanzaba los casos de uso más importantes y las clases de la capa de datos.
+
+En una nota personal, la realización de este proyecto integrador fue una experiencia sumamente enriquecedora, que me permitió adquirir conocimientos en una amplio abanico de conceptos. Más allá de la profunda formación autodidacta que resultó en un producto de software con estándares industriales, la lección más valiosa fue reconocer el potencial adquirido a lo largo de la carrera de poder proponer, diseñar e implementar soluciones para problemas del mundo real.
+
 \section{Trabajos Futuros}
+Se sugiere utilizar un nuevo canal de comunicación a través de Bluetooth para realizar la configuración inicial de un nuevo módulo.
+
+Por razones de tiempo no se pudo explorar las opciones de securitización sobre el canal de comunicación por internet. 
+queda pendiente la configuración de políticas de acceso utilizando la API HTTP provista por EMQX.
+
+También podría evaluarse el aprovisionamiento de certificados únicos para instalaciones de la aplicación así como para el stock de módulos electrónico
+de manera que se garantice que solo los dispositivos autorizados pueden utilizar el servicio del broker MQTT.
+
+En cuanto a funcionalidades para la aplicación algunos de los usuarios sugirieron la adición de grupos de módulos que se puedan accionar en simultáneo.
+A simple vista al emplear MQTT se podría resolver de una manera sencilla agregando nuevos tópicos por grupos de módulos por usuario.
+
+
+

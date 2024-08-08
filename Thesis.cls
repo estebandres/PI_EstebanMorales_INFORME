@@ -232,7 +232,7 @@
                 {ESCUELA DE INGENIERÍA EN COMPUTACIÓN}}
 %-------------------------------------------------                
 \group{\texorpdfstring{\href{Research Group Web Site URL Here (include http://)} % Your research group's URL
-                {Laboratorio de Arquitectura de Redes y Computadoras.}} % Your research group's name - this is currently used in the title page 
+                {Laboratorio de Redes y Ciberseguridad.}} % Your research group's name - this is currently used in the title page 
                 {LARyC}}
 %-------------------------------------------------                
 \GROUP{\texorpdfstring{\href{Research Group Web Site URL Here (include http://)} % Your research group's URL
@@ -429,7 +429,8 @@
 \thispagestyle{plain}
 \null\vfil
 \vskip 60\p@
-\begin{center}{\Large \sl #1}\end{center}
+%\begin{center}{\Large \sl #1}\end{center}
+\begin{flushright}{\large \sl #1}\end{flushright}
 \vfil\null
 \cleardoublepage
 }

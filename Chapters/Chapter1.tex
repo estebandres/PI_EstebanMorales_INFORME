@@ -4,22 +4,44 @@
 
 \label{Chapter1} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
 
-\lhead{Capítulo 1. \emph{Introducción}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
+\steveCabecera{Capítulo 1. \emph{Introducción}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
+
+El presente informe documenta el proyecto integrador del alumno que suscribe para la carrera Ingeniería en Computación de la FCEFyN de la UNC. Se trata de una aplicación para teléfonos android codificada enteramente en Java aplicando el paradigma de programación reactiva sobre Clean Architecture. Este proyecto se desarrolló como parte de un producto IoT destinado al control de accesos físicos a inmuebles.
+
+Este informe contempla la etapa análisis de requerimientos y de diseño del producto en su conjunto ya que fue necesaria la coordinación de los integrantes del equipo para iniciar el desarrollo. Una vez establecidos los protocolos empleados y las interfaces de comunicación entre los componentes, el procesos de desarrollo del software de la aplicación se realizó de manera independiente.
+
+Desde el punto de vista académico la mayor contribución de este proyecto se centra en la ingeniería de software involucrada en adaptar la solución a los lineamientos de un patrón de arquitectura estricto como lo es Clean Architecture. Al mismo tiempo, con el ánimo de ofrecer una implementación moderna y siguiendo la recomendación de exponentes de la industria, se asumió el reto de aplicar el paradigma de programación reactivo de manera transversal en el proyecto.
+
+Al finalizar el proyecto se obtuvo la primera versión del producto que pudo ser evaluada con usuarios reales.
+%el diseño del sistema completo, en conjunto con el responsable del sistema embebido (módulo electrónico). 
 
 \section{Motivación}
-sadasasd
-\section{Dominio del problema}
-asdasds
+%La motivación del producto en su conjunto nace de la necesidad de ofrecer un upgrade a los sistemas tradicionales de control de accesos ofrecidos en el mercado. Tras demostrarse 
+Como se mencionó anteriormente el presente proyecto forma parte de un producto IoT destinado al control de accesos físicos a inmuebles.
+A su vez este producto forma parte del plan de negocios de un emprendimiento que fue admitido en la incubadora de empresas de la UNC.
+
+La idea del proyecto nació luego de que se reportaran en los medios una sucesión de entraderas a domicilios en varios puntos de la ciudad de Córdoba. La mayoría de estos actos criminales se fueron perpetrados con el uso de inhibidores de señal que interferían con los controles remotos RF de portones automatizados. Otro caso llamativo se llevaba a cabo mediante la clonación de llaves RFID en las cerraduras magnéticas de las puertas de ingreso en edificios de departamentos. Se detectó, entonces, la necesidad de contar con una alternativa moderna a los sistemas de control tradicionales ofrecidos actualmente en el mercado.
+
 \section{Objetivos}
-asdasd
+Los objetivos del proyecto se desprenden de la propuesta de valor del producto. El general está asociado a la visión del emprendimiento.
+Y los particulares relacionados a el proceso de desarrollo del producto en sí.
 \subsection{General}
-asdasd
+Diseñar, implementar y validar una aplicación para teléfonos android que permita la configuración, el control y el monitoreo de sistemas de acceso físicos a inmuebles. 
 
 \subsection{Objetivos Particulares}
-asdasda
 
-\subsection{Objetivos Específicos}
-asdasd
+\begin{itemize}
+	\item Relevar documentación sobre cerramientos eléctricos.
+	\item Conseguir una descripción sistémica de los mismos y encontrar una propuesta de adaptación para la solución propuesta.
+	\item Definir los casos de uso y requerimientos para los desarrollos de software.
+	\item Diseñar la solución en conjunto. Definir protocolos de comunicación y establecer al interfaz de comunicación entre los componentes.
+	\item Investigar y documentar el patrón de arquitectura de software elegido.
+	\item Investigar sobre el paradigma de programación reactiva y su utilización empleando Java.
+	\item Implementar el diseño especificado.
+	\item Validar dicha implementación con pruebas automáticas.
+\end{itemize}
 
 \section{Metodología de Trabajo}
-asdasd
+%Se utilizará un panel tipo kanban para el registro del progreso de tareas de desarrollo. Las tareas serán marcadas con  
+Todo la codificación se realizará utilizando el sistema de gestión de versiones git en un repositorio privado alojado remotamente en bitbucket. Al ser un proyecto con un único programador la resolución de tareas se realizará en ramas auxiliares con origen en \textbf{develop}. Una vez terminado el trabajo en una rama auxiliar se procederá a hacer un rebase con develop y a la correspondiente re-escritura de commits para facilitar la lectura a futuro. La rama master contendrá solo las cambios cuyos ejecutables fueron distribuidos a través de la play store de android.
+

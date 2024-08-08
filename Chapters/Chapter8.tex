@@ -40,6 +40,17 @@ disponibles para este tipo de accionamiento a aquellos que se encuentren dentro 
 Uno de los aspectos más sobresalientes de la propuesta de valor del producto es la posibilidad
 de monitorear, configurar y accionar el módulo de manera remota a través de internet.
 En la figura ~\ref{fig:comunic_mod_app} se muestra el esquema de conexión para el modo de operación por internet.
+\subsection{Broker MQTT}
+Para poder usar el protocolo es necesario contar con un servidor que provea las funciones del broker MQTT.\\
+Existen muchas implementaciones listas para usar incluso de código abierto y que se ofrecen de manera gratuita en la red.
+De las más populares se optó por un producto chino de nombre \textbf{EMQX}, se trata de una implementación completa del broker MQTT
+más un tablero de control y monitoreo web accesible a través del navegador. 
+Los autores ofrecen una imagen docker lista para configurar y montar sobre contenedores.
+Adicionalmente cuenta con una API HTTP que permite la gestión de tópicos, clientes, sesiones, políticas de acceso y más. Esta implementación también admite el escalado horizontal mediante la configuración de clusters de brokers, estas funcionalidades avanzadas quedan fuera del alcance del presente proyecto.
+
+Para la primera versión del producto se configuró un contenedor de broker EMQX en un servidor virtual privado.
+Actualmente EMQX Cloud ofrece un servicio a demanda que no requiere de contar con infraestructura propia.
+
 \subsection{Adaptación del protocolo MQTT}
 Como se mencionó en la sección ~\ref{section:mqtt} el protocolo MQTT implementa el patrón de arquitectura Publish-Subscribe .
 Sin embargo por definición ~\ref{section:rpc} el protocolo RPC depende de la implementación del patrón Request-Response entre cliente y servidor. 
