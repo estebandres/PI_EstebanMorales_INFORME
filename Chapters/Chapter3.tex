@@ -2,26 +2,33 @@
 
 \chapter{Análisis de Requerimientos} % Main chapter title
 
-En el presente capítulo se describe el proceso de desarrollo del sistema que se compone en 3 partes, las cuales se detallan en cada caso el procedimiento de diseño e implementación utilizando como referencia el Documento de Especificación de Requerimientos de Sistema de \textit{Software} propuesto por la \textit{IEEE}.\\
-
 \label{Chapter3} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
 
-\lhead{Capítulo 3. \emph{Análisis de Requerimientos}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
+\steveCabecera{Capítulo 3. \emph{Análisis de Requerimientos}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
+
+
+El presente capítulo tiene como objetivo principal encontrar el factor común de diseño
+de los sistemas de acceso que se ofrecen en el mercado con el propósito de elucidar el conjunto mínimo de funcionalidades que debería cumplir una implementación moderna e incluir 
+las mejoras de la propuesta de valor. Los resultados serán formalizados en diagramas de caso de uso y la especificación de los requerimientos de software.
+
+Finalmente, se expondrán los riesgos asociados con los requerimientos que podrían entorpecer el desarrollo del proceso de software y los posibles caminos para eludir estos obstáculos.
+\\
 
 %----------------------------------------------------------------------------------------
 %	SECTION 1
 %----------------------------------------------------------------------------------------
 \section{Dominio}
-Como se detalló en la Sección ~\ref{section:controladores} todos los cerramientos eléctricos no funcionan por sí solos sino que necesitan de un controlador. Estos controladores se comercializan en diferentes presentaciones con distintos diseños, desde simples interfaces eléctricas para un botón pulsador externo como se muestra en la Figura ~\ref{fig:controladoras_simple_compleja}(a) hasta complejas centrales de acceso electrónico como la que se muestra en la Figura ~\ref{fig:controladoras_simple_compleja}(b) que incluyen interfaces para sistemas de identificación de usuarios o soporte para llaves electrónicas descritas en la Sección ~\ref{section:llaves_electronicas}.
+Como se detalló en la Sección ~\ref{section:controladores} todos los cerramientos eléctricos no funcionan por sí solos sino que necesitan de un controlador. Estos controladores se comercializan en diferentes presentaciones con distintos diseños, desde simples interfaces eléctricas para un botón pulsador externo como se muestra en la Figura ~\ref{fig:controladoras_simple_compleja}(a) hasta complejas centrales de acceso electrónico como la que se muestra en la Figura ~\ref{fig:controladoras_simple_compleja}(b) que incluyen interfaces para sistemas de identificación de usuarios o soporte para llaves electrónicas como las descritas en la Sección ~\ref{section:llaves_electronicas}.
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=0.6\textwidth]{Pictures/controladoras_simple_compleja.png}
+	\includegraphics[width=0.7\textwidth]{Pictures/controladoras_simple_compleja.png}
 	\rule{35em}{1pt}
 	\caption[Controladoras Comparativa]{Controladoras de cerramientos eléctrico, a la izquierda un simple adaptador de voltaje a la derecha una central de acceso con múltiples puertos. }
 	\label{fig:controladoras_simple_compleja}
 \end{figure}
 \subsection{Conexión con los controladores}
-Del análisis y la comparación de los distintos tipos de controladores se pudo inferir el diseño general de estos sistemas así como sus componentes principales y accesorios que se listan a continuación:\\
+Del análisis y la comparación de los distintos tipos de controladores se pudo inferir el diseño general de estos sistemas así como sus componentes principales y accesorios que se listan a continuación:
+
 \textbf{PRINCIPALES}
 \begin{itemize}
 	\item Etapa de Potencia y Adaptación de Voltajes 
@@ -47,26 +54,26 @@ Del análisis y la comparación de los distintos tipos de controladores se pudo 
 	\item Lector etiquetas RFID
 	\item Sensor Huella dactilar
 \end{itemize}
-En la Figura ~\ref{fig:controller_bdd} se puede observar un diagrama de definición por bloques del diseño generalizado para las controladoras de cerramientos eléctricos. Se resalta en violeta el componente correspondiente el pulsador físico externo.\\
+En la Figura ~\ref{fig:controller_bdd} se puede observar un diagrama de definición por bloques del diseño generalizado para las controladoras de cerramientos eléctricos. Se resalta en violeta el componente correspondiente al pulsador físico externo.\\
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=0.9\textwidth]{Pictures/controller_bdd.png}
+	\includegraphics[width=0.6\textwidth]{Pictures/controller_bdd_baw_gimp.png}
 	\rule{35em}{1pt}
 	\caption[Diagrama Bloques Controlador]{Diagrama de definición por bloques para la generalización del diseño de los controladores.}
 	\label{fig:controller_bdd}
 \end{figure}
-En el diagrama de bloques interno del controlador de la Figura ~\ref{fig:ibd_controladora} la señal de activación del pulsador es procesada por el módulo de disparador de acciones en la mayoría de los casos generando la señal de apertura o cierre del cerramiento según sea el estado del mismo.\\
+En el diagrama de bloques interno del controlador de la Figura ~\ref{fig:ibd_controladora} la señal de activación del pulsador es procesada por el módulo disparador de acciones que, en la mayoría de los casos, genera la señal de apertura o cierre según sea el estado del cerramiento.\\
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=0.6\textwidth]{Pictures/IBD_controladora.png}
+	\includegraphics[width=0.8\textwidth]{Pictures/IBD_controladora_bw_gimp.png}
 	\rule{35em}{1pt}
 	\caption[Diagrama Bloques Internos Controlador]{Diagrama de bloques internos del diseño generalizado de un controlador de cerramientos eléctricos.}
 	\label{fig:ibd_controladora}
 \end{figure}
-Después de realizar el análisis de los diseños se pudo evidenciar que la bornera para pulsador o botón externo es un factor común entre todos los modelos. Teniendo en cuenta esta particularidad se decidió adoptar esta interfaz de accionamiento como el modo de conexión universal de la solución a ser implementada. En la Figura ~\ref{fig:componentes_controladora+sol} se muestra un diagrama de componentes de alto nivel dónde se ilustra tal decisión.
+Después de realizar el análisis de los diseños se pudo evidenciar que la bornera para pulsador o botón externo es un factor común entre todos los modelos. Teniendo en cuenta esta particularidad se decidió adoptar esa interfaz de accionamiento como el modo de conexión universal de la solución a ser implementada. En la Figura ~\ref{fig:componentes_controladora+sol} se muestra un diagrama de componentes de alto nivel dónde se ilustra tal decisión.
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=0.5\textwidth]{Pictures/componentes_controladora+sol.png}
+	\includegraphics[width=0.6\textwidth]{Pictures/COMP_electric_locks.png}
 	\rule{35em}{1pt}
 	\caption[Diagrama de Componentes Conexión al Controlador]{Diagrama de componentes de alto nivel muestra la conexión propuesta para la solución de hardware.}
 	\label{fig:componentes_controladora+sol}
@@ -79,12 +86,49 @@ Estos sistemas ofrecen la posibilidad de limitar el acceso a ciertas áreas de u
 	\item Dar de baja llaves electrónicas, credenciales biométricas o por teclado.
 	\item Resetear el sistema a sus valores de fábrica.
 \end{itemize}
-\section{Requerimientos de Sistema}
-Considerando las funcionalidades básicas de un sistema de acceso tradicional y el modo de conexión universal elegido se listan a continuación los requerimientos a nivel sistema de la solución propuesta.
+\section{Casos de Uso}
+\label{section:casos_de_uso}
+Teniendo en cuenta las funcionalidades básicas de un sistema de acceso tradicional y su adaptación a la propuesta de valor del producto se plantean los actores y casos de uso. %en la figura ~\ref{fig:USO_todos}.
+Se identifican 5 actores que intervienen en el uso del producto: el \emph{Usuario} y sus 3 subtipos: \emph{Administrador, Autorizado e Invitado} y el \emph{Módulo Electrónico} que ejecutará los comandos recibidos previa autenticación y autorización.
+En las figuras ~\ref{fig:uso_listado}, ~\ref{fig:uso_config}, ~\ref{fig:uso_usuarios} y ~\ref{fig:uso_rapido} se muestran los diagramas de casos de uso separados en paquetes para facilitar su lectura.
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=\textwidth]{Figures/reque/USE_listado.png}
+	\rule{35em}{1pt}
+	\caption[Diagrama de Casos de Uso I]{Diagrama de casos de uso relacionados con el descubrimiento y control de módulos.}
+	\label{fig:uso_listado}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=\textwidth]{Figures/reque/USE_config.png}
+	\rule{35em}{1pt}
+	\caption[Diagrama de Casos de Uso II]{Diagrama de casos de uso relacionados con la configuración de un módulo.}
+	\label{fig:uso_config}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=\textwidth]{Figures/reque/USE_usuarios.png}
+	\rule{35em}{1pt}
+	\caption[Diagrama de Casos de Uso III]{Diagrama de casos de uso relacionados con el descubrimiento y control de módulos.}
+	\label{fig:uso_usuarios}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=\textwidth]{Figures/reque/USE_rapido.png}
+	\rule{35em}{1pt}
+	\caption[Diagrama de Casos de Uso IV]{Diagrama de casos de uso relacionados con el control rápido y el registro del usuario de la aplicación.}
+	\label{fig:uso_rapido}
+\end{figure}
+
+\section{Requerimientos}
+Considerando los casos de uso y el modo de conexión universal elegido se listan a continuación los requerimientos a nivel sistema de la solución propuesta.
 \subsection{Requerimientos de Sistema}
 A nivel de sistema se listan los requerimientos identificados en la Tabla ~\ref{table:req_sistemas}.
 \begin{table}[ht]
-	%\centering
+	\centering
 	%\resizebox{\textwidth}{!}{
 	\begin{tabular}{|l|m{12cm}|}
 		\hline
@@ -107,9 +151,9 @@ A nivel de sistema se listan los requerimientos identificados en la Tabla ~\ref{
 \end{table}
 \subsection{Modulo Electrónico}
 Los requerimientos encontrados para el Módulo Electrónico se listan en la Tabla ~\ref{table:req_modulo_electro}.
-Estos requerimientos fueron implementados por un colaborador del equipo quién se encargó principalmente del desarrollo de firmware por lo que los detalles del diseño y la implementación del software embebido quedan fuera del presente informe. 
+Estos requerimientos fueron implementados por un colaborador del equipo quién se encargó principalmente del desarrollo del firmware por lo que los detalles del diseño y la implementación del software embebido exceden los alcances de este informe. 
 \begin{table}[ht]
-	%\centering
+	\centering
 	%\resizebox{\textwidth}{!}{
 	\begin{tabular}{|c|m{12cm}|}
 		\hline
@@ -131,8 +175,9 @@ Estos requerimientos fueron implementados por un colaborador del equipo quién s
 	\label{table:req_modulo_electro}
 \end{table}
 \subsection{Aplicación Móvil}
+En la tabla ~\ref{table:req_aplicacion} se listan los requerimientos encontrados para la aplicación móvil.
 \begin{table}[ht]
-	%\centering
+	\centering
 	%\resizebox{\textwidth}{!}{
 	\begin{tabular}{|l|m{12cm}|}
 		\hline
@@ -159,10 +204,13 @@ Estos requerimientos fueron implementados por un colaborador del equipo quién s
 	%	}
 \end{table}
 
-En esta sección se expone el panorama de incertidumbres del proyecto y se hace foco en las eventualidades que pueden surgir durante su ejecución que pueden alterar de alguna manera la planificación y duración del proyecto.
-La gestión temprana de riesgos facilita la identificación de los mismos y permite la creación de planes de contingencia para minimizar el efecto en caso de ocurrencia.
+
 
 \subsection{Identificación de Riesgos}
+
+En esta sección se expone el panorama de incertidumbres del proyecto y se hace foco en las eventualidades que pueden surgir durante su ejecución. Estas pueden alterar, de alguna manera, la planificación y duración del proyecto.
+La gestión temprana de riesgos facilita la identificación de los mismos y permite la creación de planes de contingencia para minimizar el efecto en caso de ocurrencia.
+
 Las situaciones que puedan constituir una amenaza a la realización del proyecto se pueden clasificar por el objeto de impacto o por su causalidad.
 
 Categorización por objeto de impacto.
@@ -191,9 +239,9 @@ Aunque el valor de importancia obtenido es ilustrativo ofrece una alternativa nu
 \begin{table}[ht]
 	%\centering
 	%\resizebox{1\textwidth}{!}{
-	\begin{tabular}{|c|m{3cm}|m{5em}|c|c|c|c|}
+	\begin{tabular}{|c|>{\small}m{3cm}|m{5em}|c|c|c|c|}
 		\hline
-		\textbf{ID} & \multicolumn{1}{c|}{\textbf{Descripción}}                                        & \textbf{Objeto de Impacto} & \textbf{Causa} & \textbf{Probabilidad} & \textbf{Impacto} & \textbf{Importancia} \\ \hline
+		\textbf{ID} & \multicolumn{1}{c|}{\textbf{Descripción}} & \textbf{\small{Objeto de Impacto}} & \textbf{Causa} & \textbf{Probabilidad} & \textbf{Impacto} & \textbf{Importancia} \\ \hline
 		R00         & Problemas con el entendimiento de la arquitectura elegida para la implementacion & PROY                       & PER            & 0.3                   & 100              & 30                   \\ \hline
 		R01         & Implementación de la arquitectura elegida                                        & PROY                       & PER            & 0.6                   & 100              & 60                   \\ \hline
 		R02         & Entendimiento del paradigma de programacion reactiva utilizando RxJava           & PROY                       & PER            & 0.6                   & 10               & 6                    \\ \hline
@@ -224,7 +272,7 @@ Para los 5 riesgos identificados más importantes se plantearon las estrategias 
 \begin{table}[ht]
 	%\centering
 	%\resizebox{1\textwidth}{!}{
-	\begin{tabular}{|c|m{3cm}|m{3cm}|m{3cm}|m{3.5cm}|}
+	\begin{tabular}{|c|>{\small}m{3cm}|>{\small}m{3cm}|>{\small}m{3cm}|>{\small}m{3.5cm}|}
 		\hline
 		\multirow{2}{*}{\textbf{ID}} & \multicolumn{1}{c|}{\multirow{2}{*}{\textbf{Descripción}}}                       & \multicolumn{3}{c|}{\textbf{Estrategia}}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           \\ \cline{3-5} 
 		& \multicolumn{1}{c|}{}                                                            & \multicolumn{1}{c|}{\textbf{De Prevención}}                                                                                                                           & \multicolumn{1}{c|}{\textbf{De Mitigación}}                                                                                                                                  & \multicolumn{1}{c|}{\textbf{De Contingencia}}                                                                                                                               \\ \hline

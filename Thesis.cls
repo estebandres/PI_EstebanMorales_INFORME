@@ -54,21 +54,44 @@
 \onehalfspacing
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{2.0ex plus0.5ex minus0.2ex}
-\usepackage{vmargin}
+%\usepackage{vmargin}
 
 \RequirePackage[utf8]{inputenc} % Allows the use of international characters (e.g. Umlauts)
 
 %----------------------------------------------------------------------------------------
 %	MARGINS
 %----------------------------------------------------------------------------------------
-\setmarginsrb  { 1.5in}  % left margin
-                        { 0.6in}  % top margin
-                        { 1.0in}  % right margin
-                        { 0.8in}  % bottom margin
-                        {  20pt}  % head height
-                        {0.25in}  % head sep
-                        {   9pt}  % foot height
-                        { 0.3in}  % foot sep
+%\setmarginsrb  { 1.5in}  % left margin
+%                        { 0.6in}  % top margin
+%                        { 1.0in}  % right margin
+%                        { 0.8in}  % bottom margin
+%                        {  20pt}  % head height
+%                        {0.25in}  % head sep
+%                        {   9pt}  % foot height
+%                        { 0.3in}  % foot sep
+
+\usepackage[twoside]{geometry}
+\geometry{
+  top=15mm,
+  bottom=15mm,
+  left=15mm,
+  right=15mm,
+  includeheadfoot,
+  headsep=5mm,
+  footskip=5mm,
+  %showframe,
+  bindingoffset=10mm,
+}
+
+%\setmarginsrb  
+%              { 30mm}  % left margin
+%              { 20mm}  % top margin
+%              { 20mm}  % right margin
+%              { 20mm}  % bottom margin
+%              {  5mm}  % head height
+%              {  5mm}  % head sep
+%              {  5mm}  % foot height
+%              {  5mm}  % foot sep                        
 %----------------------------------------------------------------------------------------
 \raggedbottom
 \setlength{\topskip}{1\topskip \@plus 5\p@}
@@ -209,7 +232,7 @@
                 {ESCUELA DE INGENIERÍA EN COMPUTACIÓN}}
 %-------------------------------------------------                
 \group{\texorpdfstring{\href{Research Group Web Site URL Here (include http://)} % Your research group's URL
-                {Laboratorio de Arquitectura de Redes y Computadoras.}} % Your research group's name - this is currently used in the title page 
+                {Laboratorio de Redes y Ciberseguridad.}} % Your research group's name - this is currently used in the title page 
                 {LARyC}}
 %-------------------------------------------------                
 \GROUP{\texorpdfstring{\href{Research Group Web Site URL Here (include http://)} % Your research group's URL
@@ -406,7 +429,8 @@
 \thispagestyle{plain}
 \null\vfil
 \vskip 60\p@
-\begin{center}{\Large \sl #1}\end{center}
+%\begin{center}{\Large \sl #1}\end{center}
+\begin{flushright}{\large \sl #1}\end{flushright}
 \vfil\null
 \cleardoublepage
 }
