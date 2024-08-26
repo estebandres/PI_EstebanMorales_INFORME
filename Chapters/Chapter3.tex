@@ -2,6 +2,10 @@
 
 \chapter{Análisis de Requerimientos} % Main chapter title
 
+\label{Chapter3} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
+
+\steveCabecera{Capítulo 3. \emph{Análisis de Requerimientos}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
+
 
 El presente capítulo tiene como objetivo principal encontrar el factor común de diseño
 de los sistemas de acceso que se ofrecen en el mercado con el propósito de elucidar el conjunto mínimo de funcionalidades que debería cumplir una implementación moderna e incluir 
@@ -9,10 +13,6 @@ las mejoras de la propuesta de valor. Los resultados serán formalizados en diag
 
 Finalmente, se expondrán los riesgos asociados con los requerimientos que podrían entorpecer el desarrollo del proceso de software y los posibles caminos para eludir estos obstáculos.
 \\
-
-\label{Chapter3} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
-
-\steveCabecera{Capítulo 3. \emph{Análisis de Requerimientos}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
 
 %----------------------------------------------------------------------------------------
 %	SECTION 1
@@ -87,6 +87,7 @@ Estos sistemas ofrecen la posibilidad de limitar el acceso a ciertas áreas de u
 	\item Resetear el sistema a sus valores de fábrica.
 \end{itemize}
 \section{Casos de Uso}
+\label{section:casos_de_uso}
 Teniendo en cuenta las funcionalidades básicas de un sistema de acceso tradicional y su adaptación a la propuesta de valor del producto se plantean los actores y casos de uso. %en la figura ~\ref{fig:USO_todos}.
 Se identifican 5 actores que intervienen en el uso del producto: el \emph{Usuario} y sus 3 subtipos: \emph{Administrador, Autorizado e Invitado} y el \emph{Módulo Electrónico} que ejecutará los comandos recibidos previa autenticación y autorización.
 En las figuras ~\ref{fig:uso_listado}, ~\ref{fig:uso_config}, ~\ref{fig:uso_usuarios} y ~\ref{fig:uso_rapido} se muestran los diagramas de casos de uso separados en paquetes para facilitar su lectura.
@@ -94,7 +95,7 @@ En las figuras ~\ref{fig:uso_listado}, ~\ref{fig:uso_config}, ~\ref{fig:uso_usua
 	\centering
 	\includegraphics[width=\textwidth]{Figures/reque/USE_listado.png}
 	\rule{35em}{1pt}
-	\caption[Diagrama de Casos de Uso]{Diagrama de casos de uso relacionados con el descubrimiento y control de módulos.}
+	\caption[Diagrama de Casos de Uso I]{Diagrama de casos de uso relacionados con el descubrimiento y control de módulos.}
 	\label{fig:uso_listado}
 \end{figure}
 
@@ -102,7 +103,7 @@ En las figuras ~\ref{fig:uso_listado}, ~\ref{fig:uso_config}, ~\ref{fig:uso_usua
 	\centering
 	\includegraphics[width=\textwidth]{Figures/reque/USE_config.png}
 	\rule{35em}{1pt}
-	\caption[Diagrama de Casos de Uso]{Diagrama de casos de uso relacionados con la configuración de un módulo.}
+	\caption[Diagrama de Casos de Uso II]{Diagrama de casos de uso relacionados con la configuración de un módulo.}
 	\label{fig:uso_config}
 \end{figure}
 
@@ -110,7 +111,7 @@ En las figuras ~\ref{fig:uso_listado}, ~\ref{fig:uso_config}, ~\ref{fig:uso_usua
 	\centering
 	\includegraphics[width=\textwidth]{Figures/reque/USE_usuarios.png}
 	\rule{35em}{1pt}
-	\caption[Diagrama de Casos de Uso]{Diagrama de casos de uso relacionados con el descubrimiento y control de módulos.}
+	\caption[Diagrama de Casos de Uso III]{Diagrama de casos de uso relacionados con el descubrimiento y control de módulos.}
 	\label{fig:uso_usuarios}
 \end{figure}
 
@@ -118,7 +119,7 @@ En las figuras ~\ref{fig:uso_listado}, ~\ref{fig:uso_config}, ~\ref{fig:uso_usua
 	\centering
 	\includegraphics[width=\textwidth]{Figures/reque/USE_rapido.png}
 	\rule{35em}{1pt}
-	\caption[Diagrama de Casos de Uso]{Diagrama de casos de uso relacionados con el control rápido y el registro del usuario de la aplicación.}
+	\caption[Diagrama de Casos de Uso IV]{Diagrama de casos de uso relacionados con el control rápido y el registro del usuario de la aplicación.}
 	\label{fig:uso_rapido}
 \end{figure}
 

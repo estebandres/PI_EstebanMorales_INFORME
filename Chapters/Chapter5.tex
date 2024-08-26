@@ -21,7 +21,7 @@ Teniendo en cuenta el impacto de esta decisión de diseño se hace necesario inc
 
 Dado que el producto final incluye un modulo electrónico y un servicio online es imperativo definir con anticipación una interfaz de comunicación entre los subsistemas.
 
-Así mismo, debido a la naturaleza de los requerimientos definidos en el capítulo ~\ref{Chapter4} deben incluirse como parte del diseño diversos protocolos de comunicación, se mencionan sus características principales y se justifica su empleo en el funcionamiento del producto.
+Así mismo, debido a la naturaleza de los requerimientos definidos en el capítulo ~\ref{Chapter3} deben incluirse como parte del diseño diversos protocolos de comunicación, se mencionan sus características principales y se justifica su empleo en el funcionamiento del producto.
 
 \section{Arquitectura de Software}
 
@@ -284,7 +284,7 @@ Ya sea para la configuración inicial o la operación regular el intercambio de 
 	\centering
 	\includegraphics[width=0.9\textwidth]{Figures/design/conect.png}
 	\rule{35em}{1pt}
-	\caption[Connection Diagram]{Diagrama de comunicación entre módulo y aplicación.}
+	\caption[Esquema conexión Modulo-App]{Diagrama de comunicación entre módulo y aplicación.}
 	\label{fig:comunic_mod_app}
 \end{figure}
 
@@ -300,7 +300,7 @@ Para conseguir esto se optó por utilizar un enfoque Zeroconf que emplee DNS-SD 
 	\centering
 	\includegraphics[width=0.4\textwidth]{Figures/design/zeroconf_venn.png}
 	\rule{35em}{1pt}
-	\caption[Connection Diagram]{Diagrama de Venn que ilustra la relación entre los términos.}
+	\caption[Desambiguación Zeroconf]{Diagrama de Venn que ilustra la relación entre los términos.}
 	\label{fig:zeroconf_venn}
 \end{figure}
 
@@ -323,7 +323,7 @@ En mDNS/DNS-SD, todos los RRs que describen una instancia de servicio se almacen
 	\centering
 	\includegraphics[width=0.8\textwidth]{Figures/design/SEQ_mdns_dnssd_ink.png}
 	\rule{35em}{1pt}
-	\caption[Connection Diagram]{Secuencia del descubrimiento de servicios.}
+	\caption[mDNS y DNS-SD]{Secuencia del descubrimiento de servicios.}
 	\label{fig:zeroconf_seq}
 \end{figure}
 
@@ -341,7 +341,7 @@ Se evaluaron diversas alternativas para securitizar esta tarea y se optó por em
 	\centering
 	\includegraphics[width=\textwidth]{Figures/design/SEQ_digest_auth_ink.png}
 	\rule{35em}{1pt}
-	\caption[Connection Diagram]{Secuencia de la autenticación utilizando Digest Authentication.}
+	\caption[Secuencia HTTP Digest Authentication]{Secuencia de la autenticación utilizando Digest Authentication.}
 	\label{fig:digest_auth_seq}
 \end{figure}
 
@@ -360,7 +360,7 @@ Una vez autenticado, el cliente puede realizar nuevas solicitudes utilizando el 
 \label{section:mqtt}
 \emph{Uno de los atractivos del producto es la posibilidad de monitorear y accionar módulos de manera remota.}
 
-Para que esto sea posible es necesario que tanto el módulo como la aplicación móvil tengan acceso a internet ~\ref{comunic_mod_app}. Luego de discutir alternativas el equipo decidió que la comunicación por internet se realizará utilizando  MQTT.
+Para que esto sea posible es necesario que tanto el módulo como la aplicación móvil tengan acceso a internet ~\ref{fig:comunic_mod_app}. Luego de discutir alternativas el equipo decidió que la comunicación por internet se realizará utilizando  MQTT.
 
 MQTT es un protocolo de capa de aplicación (RFC 9431) diseñado para el intercambio de mensajes machine-to-machine (M2M) en redes de bajo ancho de banda y alta latencia. Este protocolo de comunicación se construye utilizando la arquitectura publish-suscribe mediante la que proporciona un servicio de colas de mensajes. Su implementación en los clientes es liviana por lo que se puede utilizar en sistemas embebidos de bajos recursos de hardware, razón por la cual es ideal para este proyecto.
 
@@ -368,7 +368,7 @@ MQTT es un protocolo de capa de aplicación (RFC 9431) diseñado para el interca
 	\centering
 	\includegraphics[width=0.8\textwidth]{Figures/design/SEQ_mqtt_ink.png}
 	\rule{35em}{1pt}
-	\caption[Connection Diagram]{Secuencia del envío de mensajes par $QoS = 1$.}
+	\caption[Secuencia MQTT QoS=1]{Secuencia del envío de mensajes par $QoS = 1$.}
 	\label{fig:mqtt_seq}
 \end{figure}
 
@@ -397,7 +397,7 @@ Con este propósito se analizaron diversas alternativas utilizadas en la industr
 	\centering
 	\includegraphics[width=0.8\textwidth]{Figures/design/SEQ_rpc_ink.png}
 	\rule{35em}{1pt}
-	\caption[Connection Diagram]{Secuencia de ejecución de un procedimiento remoto.}
+	\caption[Secuencia RPC]{Secuencia de ejecución de un procedimiento remoto.}
 	\label{fig:seq_rpc}
 \end{figure}
 
@@ -548,7 +548,7 @@ Se realizó un análisis de experiencia de usuario en el que se definieron las p
 	\centering
 	\includegraphics[width=0.8\textwidth]{Figures/design/user_flow_ink.png}
 	\rule{35em}{1pt}
-	\caption[Connection Diagram]{Diagrama de flujo de usuario para la aplicación móvil.}
+	\caption[Diagrama de Navegación (Wireframes)]{Diagrama de flujo de usuario para la aplicación móvil.}
 	\label{fig:app_flow}
 \end{figure}
 
@@ -568,7 +568,7 @@ Siguiendo los lineamientos de la arquitectura cada unidad respetará el formato 
 	\centering
 	\includegraphics[width=\textwidth]{Figures/design/CLASS_unit_ink.png}
 	\rule{35em}{1pt}
-	\caption[Connection Diagram]{Diagrama de clases de una unidad funcional.}
+	\caption[Clases de Unidad Funcional]{Diagrama de clases de una unidad funcional.}
 	\label{fig:class_unidad}
 \end{figure}
 
@@ -581,7 +581,7 @@ Al implementar esta plantilla se observa también que la organización del códi
 	\centering
 	\includegraphics[width=0.8\linewidth]{Figures/design/DIR_generic_unit.png}
 	\rule{\linewidth}{1pt}
-	\captionof{figure}{Diagrama de clases de una unidad funcional.}
+	\captionof{figure}{Diagrama de directorios de una unidad funcional.}
 	\label{fig:dir_unit}
 \end{Figure}
 
@@ -600,14 +600,14 @@ En el directorio \texttt{dominio} estarán los archivos que implementan los caso
  
 \subsection{Planificación de las Iteraciones}
 
-Para garantizar un prototipo mínimo y plantear las subsecuentes mejoras se proponen tres iteraciones de desarrollo acotadas, consecutivas e incrementales. Con este propósito se definieron tres subconjuntos ~\ref{fig:casosusoiter} sobre los casos de uso documentados en la sección ~\ref{section:casosdeuso}. Para cada iteración se codificará todo el andamiaje necesario para construir las unidades funcionales con las primitivas de la arquitectura, los repositorios con sus canales correspondientes, el diseño gráfico de las vistas y los algoritmos de los casos de uso.
+Para garantizar un prototipo mínimo y plantear las subsecuentes mejoras se proponen tres iteraciones de desarrollo acotadas, consecutivas e incrementales. Con este propósito se definieron tres subconjuntos ~\ref{section:casos_de_uso} sobre los casos de uso documentados en la sección ~\ref{section:casos_de_uso}. Para cada iteración se codificará todo el andamiaje necesario para construir las unidades funcionales con las primitivas de la arquitectura, los repositorios con sus canales correspondientes, el diseño gráfico de las vistas y los algoritmos de los casos de uso.
 \pagebreak
 \begin{multicols}{2}
 	\begin{Figure}%[htbp]
 		\centering
 		\includegraphics[width=\linewidth]{Figures/design/USE_todos_iterac.png}
 		\rule{\linewidth}{1pt}
-		\captionof{figure}{Subconjuntos de Casos de Uso para cadad Iteración.}
+		\captionof{figure}{Subconjuntos de Casos de Uso para cada Iteración.}
 		\label{fig:casosusoiter}
 	\end{Figure}
 	
